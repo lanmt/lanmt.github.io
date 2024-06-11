@@ -9,5 +9,5 @@ menu:
     main:
         weight: 5
         params: 
-            icon: tags
+            icon: tag
 ---
