@@ -1,3 +1,1 @@
-
-
-1
+--- content/post/my-first-post/index.md ---
