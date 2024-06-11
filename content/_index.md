@@ -6,6 +6,3 @@ menu:
         params:
             icon: home
 ---
-## 1
-## 2
-## 3
