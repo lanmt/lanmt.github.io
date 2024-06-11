@@ -7,20 +7,36 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <lastBuildDate>Thu, 07 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>Syntax</title>
-        <link>http://localhost:1313/categories/syntax/</link>
+        <title>6.s081</title>
+        <link>http://localhost:1313/categories/6.s081/</link>
         <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/categories/syntax/</guid>
-        <description></description>
+        <guid>http://localhost:1313/categories/6.s081/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/6.s081/44.jpg" alt="Featured image of post 6.s081" /&gt;</description>
+        </item>
+        <item>
+        <title>15-213</title>
+        <link>http://localhost:1313/categories/15-213/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/15-213/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/15-213/44.png" alt="Featured image of post 15-213" /&gt;</description>
         </item>
         <item>
         <title>Themes</title>
         <link>http://localhost:1313/categories/themes/</link>
-        <pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/categories/themes/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/themes/44.jpg" alt="Featured image of post Themes" /&gt;</description>
+        <description></description>
+        </item>
+        <item>
+        <title>软件架构</title>
+        <link>http://localhost:1313/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/44.jpg" alt="Featured image of post 软件架构" /&gt;</description>
         </item>
         
     </channel>
