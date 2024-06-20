@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>线性代数 on Lanmt O.o</title>
+        <link>http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</link>
+        <description>Recent content in 线性代数 on Lanmt O.o</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 19 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>线性代数的本质</title>
+        <link>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</link>
+        <pubDate>Wed, 19 Jun 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</guid>
+        <description>&lt;h1 id=&#34;向量&#34;&gt;&lt;a href=&#34;#%e5%90%91%e9%87%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;向量
+&lt;/h1&gt;&lt;h2 id=&#34;对向量的认识&#34;&gt;&lt;a href=&#34;#%e5%af%b9%e5%90%91%e9%87%8f%e7%9a%84%e8%ae%a4%e8%af%86&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;对向量的认识
+&lt;/h2&gt;&lt;p&gt;对于学物理的同学来说，向量就是一个箭头。对于学计算机的同学来说，向量就是一组&lt;strong&gt;有序&lt;/strong&gt;的数，比如stl的vector。我比较害怕数学家，就不讨论学数学的同学了。&lt;/p&gt;
+&lt;h2 id=&#34;在线性代数中的向量&#34;&gt;&lt;a href=&#34;#%e5%9c%a8%e7%ba%bf%e6%80%a7%e4%bb%a3%e6%95%b0%e4%b8%ad%e7%9a%84%e5%90%91%e9%87%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;在线性代数中的向量
+&lt;/h2&gt;&lt;p&gt;向量有两个基本的运算贯穿线性代数始终，分别是&lt;strong&gt;向量+向量&lt;/strong&gt;和&lt;strong&gt;标量×向量&lt;/strong&gt; ，另外在线性代数里，几乎所有的向量都可以默认是从原点（0,0）起始的。&lt;/p&gt;
+&lt;h2 id=&#34;二维空间中向量的运行&#34;&gt;&lt;a href=&#34;#%e4%ba%8c%e7%bb%b4%e7%a9%ba%e9%97%b4%e4%b8%ad%e5%90%91%e9%87%8f%e7%9a%84%e8%bf%90%e8%a1%8c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二维空间中向量的运行
+&lt;/h2&gt;&lt;p&gt;向量+向量符合平行四边形法则，也就是把其中一个向量的起点移动到另一个向量的终点。如下图：
+&lt;img src=&#34;http://localhost:1313/image.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;基的严格定义：向量空间的一组基是张成该空间的一个线性无关向量集&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
