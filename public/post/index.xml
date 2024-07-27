@@ -55,7 +55,7 @@
 	srcset=&#34;http://localhost:1313/post/6.s081%E5%89%8D%E4%B8%89%E7%AB%A0/image-4_huaa2256685643497b56bd7ea9ffc6c08a_20539_480x0_resize_box_3.png 480w, http://localhost:1313/post/6.s081%E5%89%8D%E4%B8%89%E7%AB%A0/image-4_huaa2256685643497b56bd7ea9ffc6c08a_20539_1024x0_resize_box_3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
-		alt=&#34;alt text&#34;
+		alt=&#34;1.txt&#34;
 	
 	
 		class=&#34;gallery-image&#34; 
@@ -69,7 +69,7 @@
 	srcset=&#34;http://localhost:1313/post/6.s081%E5%89%8D%E4%B8%89%E7%AB%A0/image-3_hu7713ff5779c0daa09fe5063bb1931603_33365_480x0_resize_box_3.png 480w, http://localhost:1313/post/6.s081%E5%89%8D%E4%B8%89%E7%AB%A0/image-3_hu7713ff5779c0daa09fe5063bb1931603_33365_1024x0_resize_box_3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
-		alt=&#34;alt text&#34;
+		alt=&#34;输出结果&#34;
 	
 	
 		class=&#34;gallery-image&#34; 
@@ -534,28 +534,176 @@ PTE_U指示这一页物理帧在用户模式下是否能访问。如果没有置
         </item>
         <item>
         <title>线性代数的本质</title>
-        <link>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</link>
+        <link>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</link>
         <pubDate>Wed, 19 Jun 2024 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</guid>
-        <description>&lt;h1 id=&#34;向量&#34;&gt;&lt;a href=&#34;#%e5%90%91%e9%87%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;向量
-&lt;/h1&gt;&lt;h2 id=&#34;对向量的认识&#34;&gt;&lt;a href=&#34;#%e5%af%b9%e5%90%91%e9%87%8f%e7%9a%84%e8%ae%a4%e8%af%86&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;对向量的认识
+        <guid>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</guid>
+        <description>&lt;h2 id=&#34;对向量的认识&#34;&gt;&lt;a href=&#34;#%e5%af%b9%e5%90%91%e9%87%8f%e7%9a%84%e8%ae%a4%e8%af%86&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;对向量的认识
 &lt;/h2&gt;&lt;p&gt;对于学物理的同学来说，向量就是一个箭头。对于学计算机的同学来说，向量就是一组&lt;strong&gt;有序&lt;/strong&gt;的数，比如stl的vector。我比较害怕数学家，就不讨论学数学的同学了。&lt;/p&gt;
 &lt;h2 id=&#34;在线性代数中的向量&#34;&gt;&lt;a href=&#34;#%e5%9c%a8%e7%ba%bf%e6%80%a7%e4%bb%a3%e6%95%b0%e4%b8%ad%e7%9a%84%e5%90%91%e9%87%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;在线性代数中的向量
 &lt;/h2&gt;&lt;p&gt;向量有两个基本的运算贯穿线性代数始终，分别是&lt;strong&gt;向量+向量&lt;/strong&gt;和&lt;strong&gt;标量×向量&lt;/strong&gt; ，另外在线性代数里，几乎所有的向量都可以默认是从原点（0,0）起始的。&lt;/p&gt;
-&lt;h2 id=&#34;二维空间中向量的运行&#34;&gt;&lt;a href=&#34;#%e4%ba%8c%e7%bb%b4%e7%a9%ba%e9%97%b4%e4%b8%ad%e5%90%91%e9%87%8f%e7%9a%84%e8%bf%90%e8%a1%8c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二维空间中向量的运行
-&lt;/h2&gt;&lt;p&gt;向量+向量符合平行四边形法则，也就是把其中一个向量的起点移动到另一个向量的终点。如下图：
-&lt;img src=&#34;http://localhost:1313/image.png&#34;
+&lt;h2 id=&#34;二维空间中向量的运算&#34;&gt;&lt;a href=&#34;#%e4%ba%8c%e7%bb%b4%e7%a9%ba%e9%97%b4%e4%b8%ad%e5%90%91%e9%87%8f%e7%9a%84%e8%bf%90%e7%ae%97&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;二维空间中向量的运算
+&lt;/h2&gt;&lt;p&gt;向量+向量符合平行四边形法则，也就是把其中一个向量的起点移动到另一个向量的终点。如下图：&lt;br&gt;
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image.png&#34;
+	width=&#34;445&#34;
+	height=&#34;276&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image_huc9c8475c820babe07a1a3072e3234f10_25361_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image_huc9c8475c820babe07a1a3072e3234f10_25361_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;向量&amp;#43;向量&#34;
 	
 	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;386px&#34;
 	
+&gt;&lt;br&gt;
+标量×向量就是对向量的伸缩&lt;/p&gt;
+&lt;h2 id=&#34;线性相关性&#34;&gt;&lt;a href=&#34;#%e7%ba%bf%e6%80%a7%e7%9b%b8%e5%85%b3%e6%80%a7&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;线性相关性
+&lt;/h2&gt;&lt;p&gt;考虑在二维空间中，如果一个向量可以由另外几个向量通过上面两个运算得到，则称他们是线性相关的。否则他们是线性无关的&lt;/p&gt;
+&lt;h2 id=&#34;张成的空间&#34;&gt;&lt;a href=&#34;#%e5%bc%a0%e6%88%90%e7%9a%84%e7%a9%ba%e9%97%b4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;张成的空间
+&lt;/h2&gt;&lt;p&gt;给一个向量集，如$\vec{a},\vec{b}$,两个标量$x,y$可取任意值，$x\vec{a}+y\vec{b}$能表达的所有向量终点的集合就是这个向量集张成的空间&lt;/p&gt;
+&lt;h2 id=&#34;基&#34;&gt;&lt;a href=&#34;#%e5%9f%ba&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;基
+&lt;/h2&gt;&lt;p&gt;基的严格定义：&lt;strong&gt;向量空间的一组基是张成该空间的一个线性无关向量集&lt;/strong&gt;&lt;br&gt;
+特殊的，在二维空间中，两个不共线的向量就是一组基，他们能表示在这个二维平面中任意一个向量。&lt;/p&gt;
+&lt;h2 id=&#34;线性变换&#34;&gt;&lt;a href=&#34;#%e7%ba%bf%e6%80%a7%e5%8f%98%e6%8d%a2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;线性变换
+&lt;/h2&gt;&lt;p&gt;线性变换可以看成对基向量的变换。&lt;br&gt;
+线性变换可以看成&lt;strong&gt;对空间的挤压伸展，保持网格线平行且等距相等。&lt;/strong&gt;&lt;br&gt;
+比如逆时针旋九十度，我们可以追踪i帽和j帽的变化，用矩阵描述这个线性变换。（同维度的变换肯定是方阵）&lt;br&gt;
+两个条件：一是原来的直线，在变换之后还是直线。二是原点必须固定。&lt;br&gt;
+&lt;strong&gt;严格定义：&lt;/strong&gt;&lt;br&gt;
+Additivity:$L(\vec{v}+\vec{w})=L((\vec{v})+L({\vec{w}}))$&lt;br&gt;
+Scaling:$L(c\vec{v})=cL(\vec{v})$&lt;/p&gt;
+&lt;h2 id=&#34;矩阵乘法&#34;&gt;&lt;a href=&#34;#%e7%9f%a9%e9%98%b5%e4%b9%98%e6%b3%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;矩阵乘法
+&lt;/h2&gt;&lt;p&gt;两次线性变换叠加，换成矩阵乘法，如下图所示。（先旋转再剪切，也就是旋转后的基向量，再根据剪切矩阵转换。）
+显然变换的顺序不同，乘法的结果也不同。&lt;br&gt;
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-1.png&#34;
+	width=&#34;1572&#34;
+	height=&#34;776&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-1_hu984b758d9bcc0fde18d7ab1b0753a9c2_279319_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-1_hu984b758d9bcc0fde18d7ab1b0753a9c2_279319_1024x0_resize_box_3.png 1024w&#34;
 	loading=&#34;lazy&#34;
 	
 		alt=&#34;alt text&#34;
 	
 	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;202&#34;
+		data-flex-basis=&#34;486px&#34;
+	
+&gt;
+从线性变换的角度来看&lt;strong&gt;矩阵乘法结合律&lt;/strong&gt;，(AB)C和A(BC)都是按CBA的顺序变换的，所以这两个式子相等。&lt;/p&gt;
+&lt;h2 id=&#34;行列式&#34;&gt;&lt;a href=&#34;#%e8%a1%8c%e5%88%97%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;行列式
+&lt;/h2&gt;&lt;p&gt;一个2x2的矩阵的行列式在二维空间中可以看成单位正方形在变换后面积的变化。&lt;br&gt;
+同理3x3的矩阵的行列式在三维空间中可以看成单位立方体在变换后面积的变化。如果面积变成了0，则这个&lt;strong&gt;矩阵的列肯定是线性相关的&lt;/strong&gt;。&lt;br&gt;
+对于两个变换M，N，det(MN)=det(M)*det(N)，在二维空间中直观上可以想象单位正方形面积的变化。&lt;/p&gt;
+&lt;h2 id=&#34;逆矩阵&#34;&gt;&lt;a href=&#34;#%e9%80%86%e7%9f%a9%e9%98%b5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;逆矩阵
+&lt;/h2&gt;&lt;p&gt;$A\vec{x}=\vec{a}$。&lt;strong&gt;几何意义&lt;/strong&gt;是找到一个向量 $\vec{x}$，经过A变换之后变成 $\vec{a}$。定义从 $\vec{a}$ 到 $\vec{x}$ 的变换为A的逆，记为 $A^{-1}$，有$AA^{-1}\vec{x}=I\vec{x}=A^{-1}\vec{a}$。&lt;/p&gt;
+&lt;h2 id=&#34;列空间秩零空间&#34;&gt;&lt;a href=&#34;#%e5%88%97%e7%a9%ba%e9%97%b4%e7%a7%a9%e9%9b%b6%e7%a9%ba%e9%97%b4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;列空间、秩、零空间
+&lt;/h2&gt;&lt;p&gt;对于一个nxn的方阵，每一列都对应一个基向量，这组基张成的空间就是列空间。秩等于列空间的维度。等于n的话就是满秩，也就是这些列向量线性无关。&lt;br&gt;
+如果不是满秩，假设在二维空间中，变换之后空间变成了一条线，则在某一条直线上的向量，经过变换之后被压缩到了原点，这条线称为&lt;strong&gt;零空间&lt;/strong&gt;。在三维空间中，如果变换之后空间变成了一条线，则零空间是一个平面。&lt;/p&gt;
+&lt;h2 id=&#34;点乘&#34;&gt;&lt;a href=&#34;#%e7%82%b9%e4%b9%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;点乘
+&lt;/h2&gt;&lt;p&gt;在二维平面中，点乘可以看成降维的线性变换，平面变成一个数轴（这个数轴可以和其中任何一个向量共线），变换后在这个数轴上的值就是点乘的结果。
+下面这个图中，&lt;strong&gt;u是这个数轴的单位向量&lt;/strong&gt;。
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-2.png&#34;
+	width=&#34;1034&#34;
+	height=&#34;755&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-2_hu93c78c49f5c5a4c52581816b3f42cb0f_136517_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-2_hu93c78c49f5c5a4c52581816b3f42cb0f_136517_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;136&#34;
+		data-flex-basis=&#34;328px&#34;
+	
+&gt;&lt;br&gt;
+这一集有点困难。看了不下五遍。&lt;/p&gt;
+&lt;h2 id=&#34;叉乘&#34;&gt;&lt;a href=&#34;#%e5%8f%89%e4%b9%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;叉乘
+&lt;/h2&gt;&lt;p&gt;大小是行列式的值，方向垂直于两个向量（使用右手判断方向）。&lt;br&gt;
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-3.png&#34;
+	width=&#34;1892&#34;
+	height=&#34;600&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-3_hu461b5b4193ce0bfc2db045e1ce394510_368285_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-3_hu461b5b4193ce0bfc2db045e1ce394510_368285_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;315&#34;
+		data-flex-basis=&#34;756px&#34;
+	
+&gt;&lt;br&gt;
+后面在线性变换的角度，通过对偶性引入点乘，解释了这个式子，不过我只看了一遍，不是很懂。&lt;/p&gt;
+&lt;h2 id=&#34;基变换&#34;&gt;&lt;a href=&#34;#%e5%9f%ba%e5%8f%98%e6%8d%a2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;基变换
+&lt;/h2&gt;&lt;p&gt;选用不同的基向量，描述同一个向量的的结果不同。&lt;br&gt;
+在二维空间中，我们比较容易接受的一组基向量是(1,0)和(0,1)，对于&lt;strong&gt;不同的基向量&lt;/strong&gt;，我们可以理解为从原来的空间通过&lt;strong&gt;线性变换&lt;/strong&gt;转换，矩阵记为A。对于我们熟知的线性变换，比如逆时针旋转九十度，矩阵记为M。&lt;br&gt;
+一个向量 $\vec{v}$，转换到A变换的空间逆时针旋转九十度为 $A^{-1}MA\vec{v}$。&lt;/p&gt;
+&lt;h2 id=&#34;特征值特征向量&#34;&gt;&lt;a href=&#34;#%e7%89%b9%e5%be%81%e5%80%bc%e7%89%b9%e5%be%81%e5%90%91%e9%87%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;特征值、特征向量
+&lt;/h2&gt;&lt;p&gt;一些向量在线性变换后，&lt;strong&gt;只改变大小&lt;/strong&gt;，对于这种向量满足 $M\vec{v}=λ\vec{v}$，$λ$可以写成$λI$，整理一下$(M-λI)v=\vec{0}$，也就是让左边这个矩阵的&lt;strong&gt;行列式等于0&lt;/strong&gt;，计算出特征值，代入原来的式子就能得到特征向量所在的空间了（二维空间中一般是直线方程）。&lt;br&gt;
+利用只改变大小的性质，可以通过基变换，把基向量转换成能张成原来空间的若干个特征向量（这组基叫特征基），可以简化多次利用这种变换的计算。&lt;br&gt;
+如下图，先转换基向量，再进行线性变换，在转换到原来的坐标系，只是伸缩了大小。&lt;br&gt;
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-4.png&#34;
+	width=&#34;1589&#34;
+	height=&#34;310&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-4_hu7453001dd8bb8d7ed8f6954dc2e3237c_220903_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-4_hu7453001dd8bb8d7ed8f6954dc2e3237c_220903_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;512&#34;
+		data-flex-basis=&#34;1230px&#34;
+	
 &gt;&lt;/p&gt;
-&lt;p&gt;基的严格定义：向量空间的一组基是张成该空间的一个线性无关向量集&lt;/p&gt;
+&lt;h2 id=&#34;抽象向量空间&#34;&gt;&lt;a href=&#34;#%e6%8a%bd%e8%b1%a1%e5%90%91%e9%87%8f%e7%a9%ba%e9%97%b4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;抽象向量空间
+&lt;/h2&gt;&lt;p&gt;满足八大定理，随意定义一些东西，就可以使用向量的所有性质和计算方法。&lt;/p&gt;
+&lt;h2 id=&#34;克莱姆法则&#34;&gt;&lt;a href=&#34;#%e5%85%8b%e8%8e%b1%e5%a7%86%e6%b3%95%e5%88%99&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;克莱姆法则
+&lt;/h2&gt;&lt;p&gt;如下图，黄色区域的面积是x。&lt;br&gt;
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-5.png&#34;
+	width=&#34;788&#34;
+	height=&#34;637&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-5_hu137effc469564347391b9688fb2f8013_170843_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-5_hu137effc469564347391b9688fb2f8013_170843_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;123&#34;
+		data-flex-basis=&#34;296px&#34;
+	
+&gt;&lt;br&gt;
+该黄色区域的变化相当于把基向量为红色和粉色的线性变换。这个面积相当于单位正方形。&lt;br&gt;
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-6.png&#34;
+	width=&#34;937&#34;
+	height=&#34;542&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-6_huf91708b439a890ed6bd7bcbc9ec063e5_274472_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-6_huf91708b439a890ed6bd7bcbc9ec063e5_274472_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;172&#34;
+		data-flex-basis=&#34;414px&#34;
+	
+&gt;&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-8.png&#34;
+	width=&#34;994&#34;
+	height=&#34;499&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-8_hu13de6f62c4cc1d0609527a955dfe8c7a_219547_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/image-8_hu13de6f62c4cc1d0609527a955dfe8c7a_219547_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;199&#34;
+		data-flex-basis=&#34;478px&#34;
+	
+&gt;&lt;/p&gt;
 </description>
         </item>
         <item>
