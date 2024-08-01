@@ -7,6 +7,540 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
         <lastBuildDate>Thu, 20 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>xv6-book Chapter 4:Traps and system calls</title>
+        <link>http://localhost:1313/post/6.s081-chapter4/</link>
+        <pubDate>Thu, 20 Jun 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/6.s081-chapter4/</guid>
+        <description>&lt;h1 id=&#34;学习笔记&#34;&gt;&lt;a href=&#34;#%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;学习笔记
+&lt;/h1&gt;&lt;h2 id=&#34;问题&#34;&gt;&lt;a href=&#34;#%e9%97%ae%e9%a2%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;问题
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;调用函数时栈是从高地址向低地址增长，但是内核栈的guard page在高地址啊&lt;/li&gt;
+&lt;li&gt;trap用到的寄存器stvec那几个，这个图里怎么没有
+re: stvec是特殊寄存器，这个图里的是通用寄存器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;参考资料&#34;&gt;&lt;a href=&#34;#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;参考资料
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://lgl88911.gitee.io/2021/02/28/RISC-V%E6%B1%87%E7%BC%96%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RISC-V汇编快速入门&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;risc-v&#34;&gt;&lt;a href=&#34;#risc-v&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;risc-v
+&lt;/h2&gt;&lt;h3 id=&#34;寄存器&#34;&gt;&lt;a href=&#34;#%e5%af%84%e5%ad%98%e5%99%a8&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;寄存器
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/image.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;risc-v的通用寄存器&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;在函数调用时根据saver不同寄存器分为caller和callee&#34;&gt;&lt;a href=&#34;#%e5%9c%a8%e5%87%bd%e6%95%b0%e8%b0%83%e7%94%a8%e6%97%b6%e6%a0%b9%e6%8d%aesaver%e4%b8%8d%e5%90%8c%e5%af%84%e5%ad%98%e5%99%a8%e5%88%86%e4%b8%bacaller%e5%92%8ccallee&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;在函数调用时，根据Saver不同寄存器分为Caller和Callee
+&lt;/h3&gt;&lt;p&gt;a调用b
+Caller寄存器：不会保留，可以被b可以覆盖
+Callee寄存器：会被保留，不可以被b覆盖&lt;/p&gt;
+&lt;h3 id=&#34;risc-v指令&#34;&gt;&lt;a href=&#34;#risc-v%e6%8c%87%e4%bb%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;risc-v指令
+&lt;/h3&gt;&lt;p&gt;b一个字节8位
+h一个半字16位
+w一个字32位
+d两个字64位
+A&amp;amp;T格式（第一个是目的操作数，后面的是源操作数，除了save指令嗷）&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;指令&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;缩写&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;lb rd,offset(rs1)&lt;/td&gt;
+&lt;td&gt;从地址为寄存器rs1的值加offset的主存中读一个字节，符号扩展后存入rd&lt;/td&gt;
+&lt;td&gt;load&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lbu rd,offset(rs1)&lt;/td&gt;
+&lt;td&gt;从地址为寄存器rs1的值加offset的主存中读一个字节，零扩展后存入rd&lt;/td&gt;
+&lt;td&gt;load&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sb rs1,offset(rs2)&lt;/td&gt;
+&lt;td&gt;把寄存器rs1的值存入地址为寄存器rs2的值加offset的内存中，保留低8位&lt;/td&gt;
+&lt;td&gt;save&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sh rs1,offset(rs2)&lt;/td&gt;
+&lt;td&gt;把寄存器rs1的值存入地址为寄存器rs2的值加offset的内存中，保留低16位&lt;/td&gt;
+&lt;td&gt;save&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;csrrw rd,csr,rs1&lt;/td&gt;
+&lt;td&gt;csr中的值写入rd，rs1的值写入csr&lt;/td&gt;
+&lt;td&gt;control status register&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;csrrs rd,csr,rs1&lt;/td&gt;
+&lt;td&gt;csr中的值写入rd，rs1的值或上csr的值在写入csr&lt;/td&gt;
+&lt;td&gt;control status register&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;csrrc rd,csr,rs1&lt;/td&gt;
+&lt;td&gt;csr中的值写入rd，根据rs1的值对csr中的值按位清零再写入csr&lt;/td&gt;
+&lt;td&gt;control status register&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;csrr rd,csr&lt;/td&gt;
+&lt;td&gt;相当于csrrs rd,csr,zero&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;csrw csr,rs1&lt;/td&gt;
+&lt;td&gt;相当于csrrw zero,csr,rs1&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;三种trap&#34;&gt;&lt;a href=&#34;#%e4%b8%89%e7%a7%8dtrap&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三种trap
+&lt;/h2&gt;&lt;p&gt;也就是三种事件，会使cpu把正在执行的普通代码强制转换成一段特殊代码，去处理这个事件&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;system call&lt;/li&gt;
+&lt;li&gt;exception (e.g. devide by 0 and use a invalid virtual address)&lt;/li&gt;
+&lt;li&gt;interrupt (the disk hardware finishes a read or write request)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;risc-v的trap机制&#34;&gt;&lt;a href=&#34;#risc-v%e7%9a%84trap%e6%9c%ba%e5%88%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;risc-v的trap机制
+&lt;/h2&gt;&lt;h3 id=&#34;几个重要的寄存器&#34;&gt;&lt;a href=&#34;#%e5%87%a0%e4%b8%aa%e9%87%8d%e8%a6%81%e7%9a%84%e5%af%84%e5%ad%98%e5%99%a8&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;几个重要的寄存器
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;stvec&lt;/strong&gt;：保存处理trap的handler的地址&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;sepc&lt;/strong&gt;：陷阱发生时，保存pc的值。可以通过sret指令将sepc寄存器的值复制到pc寄存器中，userret中，sret指令将sepc的值复制到pc&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;scause&lt;/strong&gt;：描述trap的类型&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;sscratch&lt;/strong&gt;：一个特别的寄存器，通常发生在trap中，并进入到uservec之后，sscratch装载着指向进程trapframe的指针（该进程的trapframe，在进程被创建，并从userret返回的时候，就已经被内核设置好并且放置到sscratch中）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;sstatus&lt;/strong&gt;：sstatus的SIE位控制是否启用设备中断，SPP位指示trap是来自用户模式还是监管模式，并控制sret返回什么模式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;trap发生时risc-v的硬件处理步骤除了timer-interrupts&#34;&gt;&lt;a href=&#34;#trap%e5%8f%91%e7%94%9f%e6%97%b6risc-v%e7%9a%84%e7%a1%ac%e4%bb%b6%e5%a4%84%e7%90%86%e6%ad%a5%e9%aa%a4%e9%99%a4%e4%ba%86timer-interrupts&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;trap发生时，risc-v的硬件处理步骤（除了timer interrupts）
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;如果是device interrupt，sstatus的SIE会被清除，然后就没了，不会执行下面的步骤&lt;/li&gt;
+&lt;li&gt;清除sstatus的SIE使interrupt不可用&lt;/li&gt;
+&lt;li&gt;把pc的值存到sepc&lt;/li&gt;
+&lt;li&gt;将现在的mode保存到sstatus的SPP&lt;/li&gt;
+&lt;li&gt;设置scause（描述trap的类型）&lt;/li&gt;
+&lt;li&gt;set the mode to supervisor&lt;/li&gt;
+&lt;li&gt;copy stvec(address of handler) to the pc&lt;/li&gt;
+&lt;li&gt;根据pc的值继续运行&lt;br&gt;
+&lt;strong&gt;其他寄存器都不会变化，页表、栈（sp）都不会变化，这些都是软件的工作&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;用户空间的traps&#34;&gt;&lt;a href=&#34;#%e7%94%a8%e6%88%b7%e7%a9%ba%e9%97%b4%e7%9a%84traps&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;用户空间的traps
+&lt;/h2&gt;&lt;p&gt;用户页表需要保存uservec的映射，uservec是trap代码路径的第一步
+下面的这些代码就是为了进入内核做准备的&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;struct trapframe {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 kernel_satp;   &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; kernel page table
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;   &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 kernel_sp;     &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; top of process&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;s kernel stack&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 kernel_trap;   &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; usertrap()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;24&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 epc;           &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; saved user program counter
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 kernel_hartid; &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; saved kernel tp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 ra;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;48&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 sp;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;56&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 gp;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 tp;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;72&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t0;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t1;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;88&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t2;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;96&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s0;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;104&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s1;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;112&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a0;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;120&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a1;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a2;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;136&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a3;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;144&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a4;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;152&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a5;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;160&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a6;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;168&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 a7;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;176&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s2;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;184&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s3;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;192&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s4;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s5;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;208&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s6;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;216&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s7;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s8;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;232&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s9;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;240&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s10;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;248&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 s11;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t3;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;264&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t4;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;272&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t5;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;/*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;280&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*/&lt;/span&gt; uint64 t6;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;uservec:    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# trap.c sets stvec to point here, so&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# traps from user space start here,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# in supervisor mode, but with a&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# user page table.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# sscratch points to where the process&amp;#39;s p-&amp;gt;trapframe is&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# mapped into user space, at TRAPFRAME.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;#&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;# 把现在寄存器的值保存在触发这个陷阱的进程的TRAPFRAME页&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;# swap a0 and sscratch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# so that a0 is TRAPFRAME&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        csrrw a0, sscratch, a0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# save the user registers in TRAPFRAME&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd ra, &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd sp, &lt;span style=&#34;color:#ae81ff&#34;&gt;48&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd gp, &lt;span style=&#34;color:#ae81ff&#34;&gt;56&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd tp, &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;72&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t1, &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t2, &lt;span style=&#34;color:#ae81ff&#34;&gt;88&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s0, &lt;span style=&#34;color:#ae81ff&#34;&gt;96&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s1, &lt;span style=&#34;color:#ae81ff&#34;&gt;104&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a1, &lt;span style=&#34;color:#ae81ff&#34;&gt;120&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a2, &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a3, &lt;span style=&#34;color:#ae81ff&#34;&gt;136&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a4, &lt;span style=&#34;color:#ae81ff&#34;&gt;144&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a5, &lt;span style=&#34;color:#ae81ff&#34;&gt;152&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a6, &lt;span style=&#34;color:#ae81ff&#34;&gt;160&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a7, &lt;span style=&#34;color:#ae81ff&#34;&gt;168&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s2, &lt;span style=&#34;color:#ae81ff&#34;&gt;176&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s3, &lt;span style=&#34;color:#ae81ff&#34;&gt;184&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s4, &lt;span style=&#34;color:#ae81ff&#34;&gt;192&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s5, &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s6, &lt;span style=&#34;color:#ae81ff&#34;&gt;208&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s7, &lt;span style=&#34;color:#ae81ff&#34;&gt;216&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s8, &lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s9, &lt;span style=&#34;color:#ae81ff&#34;&gt;232&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s10, &lt;span style=&#34;color:#ae81ff&#34;&gt;240&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s11, &lt;span style=&#34;color:#ae81ff&#34;&gt;248&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t3, &lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t4, &lt;span style=&#34;color:#ae81ff&#34;&gt;264&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t5, &lt;span style=&#34;color:#ae81ff&#34;&gt;272&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t6, &lt;span style=&#34;color:#ae81ff&#34;&gt;280&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;# save the user a0 in p-&amp;gt;trapframe-&amp;gt;a0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;#sscratch是原来的a0，先放到t0，再放到TRAPFRAME偏移为112的位置&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        csrr t0, sscratch
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;112&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# restore kernel stack pointer from p-&amp;gt;trapframe-&amp;gt;kernel_sp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld sp, &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# make tp hold the current hartid, from p-&amp;gt;trapframe-&amp;gt;kernel_hartid&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld tp, &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# load the address of usertrap(), p-&amp;gt;trapframe-&amp;gt;kernel_trap&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# 这里把页表设置成了内核页表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# restore kernel page table from p-&amp;gt;trapframe-&amp;gt;kernel_satp&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t1, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        csrw satp, t1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sfence&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;vma zero, zero
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# a0 is no longer valid, since the kernel page&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# table does not specially map p-&amp;gt;tf.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# jump to usertrap(), which does not return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        jr t0
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上面代码最后 jump to usertrap，usertrap检验是哪一种trap执行对应的操作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;usertrap&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; which_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;((&lt;span style=&#34;color:#a6e22e&#34;&gt;r_sstatus&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; SSTATUS_SPP) &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;panic&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;usertrap: not from user mode&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// send interrupts and exceptions to kerneltrap(),
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// since we&amp;#39;re now in the kernel.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 切换成内核页表就要改变stvec，因为内核运行的时候也可能产生trap
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;w_stvec&lt;/span&gt;((uint64)kernelvec);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; proc &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;p &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;myproc&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// save user program counter.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;epc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_sepc&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r_scause&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// system call
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;killed)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#a6e22e&#34;&gt;exit&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// sepc points to the ecall instruction,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// but we want to return to the next instruction.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;epc &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;4&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// an interrupt will change sstatus &amp;amp;c registers,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// so don&amp;#39;t enable until done with those registers.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;intr_on&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;syscall&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;((which_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;devintr&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// ok
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  } &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;usertrap(): unexpected scause %p pid=%d&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r_scause&lt;/span&gt;(), p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;pid);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;            sepc=%p stval=%p&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r_sepc&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;r_stval&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;killed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;killed)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;exit&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// give up the CPU if this is a timer interrupt.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(which_dev &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;yield&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;usertrapret&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;返回用户空间的第一步是调用usertrapret函数&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// return to user space
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;usertrapret&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; proc &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;p &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;myproc&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// we&amp;#39;re about to switch the destination of traps from
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// kerneltrap() to usertrap(), so turn off interrupts until
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// we&amp;#39;re back in user space, where usertrap() is correct.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;intr_off&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// send syscalls, interrupts, and exceptions to trampoline.S
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;w_stvec&lt;/span&gt;(TRAMPOLINE &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; (uservec &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; trampoline));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// set up trapframe values that uservec will need when
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// the process next re-enters the kernel.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;kernel_satp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_satp&lt;/span&gt;();         &lt;span style=&#34;color:#75715e&#34;&gt;// kernel page table
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;kernel_sp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;kstack &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; PGSIZE; &lt;span style=&#34;color:#75715e&#34;&gt;// process&amp;#39;s kernel stack
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;kernel_trap &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (uint64)usertrap;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;kernel_hartid &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_tp&lt;/span&gt;();         &lt;span style=&#34;color:#75715e&#34;&gt;// hartid for cpuid()
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// set up the registers that trampoline.S&amp;#39;s sret will use
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// to get to user space.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// set S Previous Privilege mode to User.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;unsigned&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;long&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_sstatus&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  x &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;~&lt;/span&gt;SSTATUS_SPP; &lt;span style=&#34;color:#75715e&#34;&gt;// clear SPP to 0 for user mode
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  x &lt;span style=&#34;color:#f92672&#34;&gt;|=&lt;/span&gt; SSTATUS_SPIE; &lt;span style=&#34;color:#75715e&#34;&gt;// enable interrupts in user mode
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;w_sstatus&lt;/span&gt;(x);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// set S Exception Program Counter to the saved user pc.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;w_sepc&lt;/span&gt;(p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;trapframe&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;epc);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// tell trampoline.S the user page table to switch to.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  uint64 satp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MAKE_SATP&lt;/span&gt;(p&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;pagetable);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// jump to trampoline.S at the top of memory, which 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// switches to the user page table, restores user registers,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// and switches to user mode with sret.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  uint64 fn &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; TRAMPOLINE &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; (userret &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; trampoline);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  ((&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;)(uint64,uint64))fn)(TRAPFRAME, satp);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;fn函数就是调用userret&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;userret:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# userret(TRAPFRAME, pagetable)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# switch from kernel to user.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# usertrapret() calls here.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# a0: TRAPFRAME, in user page table.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# a1: user page table, for satp.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# switch to the user page table.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        csrw satp, a1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sfence&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;vma zero, zero
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# put the saved user a0 in sscratch, so we&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# can swap it with our a0 (TRAPFRAME) in the last step.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;112&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        csrw sscratch, t0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# restore all but a0 from TRAPFRAME&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld ra, &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld sp, &lt;span style=&#34;color:#ae81ff&#34;&gt;48&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld gp, &lt;span style=&#34;color:#ae81ff&#34;&gt;56&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld tp, &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;72&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t1, &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t2, &lt;span style=&#34;color:#ae81ff&#34;&gt;88&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s0, &lt;span style=&#34;color:#ae81ff&#34;&gt;96&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s1, &lt;span style=&#34;color:#ae81ff&#34;&gt;104&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a1, &lt;span style=&#34;color:#ae81ff&#34;&gt;120&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a2, &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a3, &lt;span style=&#34;color:#ae81ff&#34;&gt;136&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a4, &lt;span style=&#34;color:#ae81ff&#34;&gt;144&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a5, &lt;span style=&#34;color:#ae81ff&#34;&gt;152&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a6, &lt;span style=&#34;color:#ae81ff&#34;&gt;160&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a7, &lt;span style=&#34;color:#ae81ff&#34;&gt;168&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s2, &lt;span style=&#34;color:#ae81ff&#34;&gt;176&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s3, &lt;span style=&#34;color:#ae81ff&#34;&gt;184&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s4, &lt;span style=&#34;color:#ae81ff&#34;&gt;192&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s5, &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s6, &lt;span style=&#34;color:#ae81ff&#34;&gt;208&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s7, &lt;span style=&#34;color:#ae81ff&#34;&gt;216&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s8, &lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s9, &lt;span style=&#34;color:#ae81ff&#34;&gt;232&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s10, &lt;span style=&#34;color:#ae81ff&#34;&gt;240&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s11, &lt;span style=&#34;color:#ae81ff&#34;&gt;248&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t3, &lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t4, &lt;span style=&#34;color:#ae81ff&#34;&gt;264&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t5, &lt;span style=&#34;color:#ae81ff&#34;&gt;272&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t6, &lt;span style=&#34;color:#ae81ff&#34;&gt;280&lt;/span&gt;(a0)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#75715e&#34;&gt;# restore user a0, and save TRAPFRAME in sscratch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        csrrw a0, sscratch, a0
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# return to user mode and user pc. &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# usertrapret() set up sstatus and sepc.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sret
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;# sret做三件事 ①复制sepc到pc ②切换到用户模式 ③开放中断&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;内核空间的traps&#34;&gt;&lt;a href=&#34;#%e5%86%85%e6%a0%b8%e7%a9%ba%e9%97%b4%e7%9a%84traps&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;内核空间的traps
+&lt;/h2&gt;&lt;p&gt;第一步：kernelvec
+由于此时已经是内核空间下，trap发生时，就不需要修改satp和sp了，内核页表和内核栈都可以继续使用。&lt;br&gt;
+首先把寄存器的值保存到内核栈中。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kernelvec:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; make room to save registers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; kernelvec saves the registers on the stack of the interrupted kernel thread, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; which makes sense because the register values belong to that thread
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        addi sp, sp, &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; save the registers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd ra, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd sp, &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd gp, &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd tp, &lt;span style=&#34;color:#ae81ff&#34;&gt;24&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t1, &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t2, &lt;span style=&#34;color:#ae81ff&#34;&gt;48&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s0, &lt;span style=&#34;color:#ae81ff&#34;&gt;56&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s1, &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a0, &lt;span style=&#34;color:#ae81ff&#34;&gt;72&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a1, &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a2, &lt;span style=&#34;color:#ae81ff&#34;&gt;88&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a3, &lt;span style=&#34;color:#ae81ff&#34;&gt;96&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a4, &lt;span style=&#34;color:#ae81ff&#34;&gt;104&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a5, &lt;span style=&#34;color:#ae81ff&#34;&gt;112&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a6, &lt;span style=&#34;color:#ae81ff&#34;&gt;120&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd a7, &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s2, &lt;span style=&#34;color:#ae81ff&#34;&gt;136&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s3, &lt;span style=&#34;color:#ae81ff&#34;&gt;144&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s4, &lt;span style=&#34;color:#ae81ff&#34;&gt;152&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s5, &lt;span style=&#34;color:#ae81ff&#34;&gt;160&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s6, &lt;span style=&#34;color:#ae81ff&#34;&gt;168&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s7, &lt;span style=&#34;color:#ae81ff&#34;&gt;176&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s8, &lt;span style=&#34;color:#ae81ff&#34;&gt;184&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s9, &lt;span style=&#34;color:#ae81ff&#34;&gt;192&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s10, &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd s11, &lt;span style=&#34;color:#ae81ff&#34;&gt;208&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t3, &lt;span style=&#34;color:#ae81ff&#34;&gt;216&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t4, &lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t5, &lt;span style=&#34;color:#ae81ff&#34;&gt;232&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        sd t6, &lt;span style=&#34;color:#ae81ff&#34;&gt;240&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;//&lt;/span&gt; call the C trap handler &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; trap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;c
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        call kerneltrap
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;第二步，判断trap类型&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// interrupts and exceptions from kernel code go here via kernelvec,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// on whatever the current kernel stack is.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;kerneltrap&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; which_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 在开始将sepc,sstatus先存起来
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// Because a yield may have disturbed the saved sepc and the saved previous mode in sstatus
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  uint64 sepc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_sepc&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  uint64 sstatus &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_sstatus&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  uint64 scause &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;r_scause&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;((sstatus &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; SSTATUS_SPP) &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;panic&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kerneltrap: not from supervisor mode&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;intr_get&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;panic&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kerneltrap: interrupts enabled&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 异常
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;((which_dev &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;devintr&lt;/span&gt;()) &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;){
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;scause %p&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, scause);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;printf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sepc=%p stval=%p&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r_sepc&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;r_stval&lt;/span&gt;());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;panic&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;kerneltrap&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// 时间片完，放弃cpu
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// give up the CPU if this is a timer interrupt.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// process’s kernel thread is running(rather than a scheduler thread)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt;(which_dev &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;myproc&lt;/span&gt;() &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;myproc&lt;/span&gt;()&lt;span style=&#34;color:#f92672&#34;&gt;-&amp;gt;&lt;/span&gt;state &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; RUNNING)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#a6e22e&#34;&gt;yield&lt;/span&gt;();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// the yield() may have caused some traps to occur,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;// so restore trap registers for use by kernelvec.S&amp;#39;s sepc instruction.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;w_sepc&lt;/span&gt;(sepc);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;w_sstatus&lt;/span&gt;(sstatus);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;第三步：恢复所有的寄存器&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// restore registers.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        ld ra, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld sp, &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld gp, &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// not this, in case we moved CPUs: ld tp, 24(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        ld t0, &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t1, &lt;span style=&#34;color:#ae81ff&#34;&gt;40&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t2, &lt;span style=&#34;color:#ae81ff&#34;&gt;48&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s0, &lt;span style=&#34;color:#ae81ff&#34;&gt;56&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s1, &lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a0, &lt;span style=&#34;color:#ae81ff&#34;&gt;72&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a1, &lt;span style=&#34;color:#ae81ff&#34;&gt;80&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a2, &lt;span style=&#34;color:#ae81ff&#34;&gt;88&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a3, &lt;span style=&#34;color:#ae81ff&#34;&gt;96&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a4, &lt;span style=&#34;color:#ae81ff&#34;&gt;104&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a5, &lt;span style=&#34;color:#ae81ff&#34;&gt;112&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a6, &lt;span style=&#34;color:#ae81ff&#34;&gt;120&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld a7, &lt;span style=&#34;color:#ae81ff&#34;&gt;128&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s2, &lt;span style=&#34;color:#ae81ff&#34;&gt;136&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s3, &lt;span style=&#34;color:#ae81ff&#34;&gt;144&lt;/span&gt;(sp) 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s4, &lt;span style=&#34;color:#ae81ff&#34;&gt;152&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s5, &lt;span style=&#34;color:#ae81ff&#34;&gt;160&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s6, &lt;span style=&#34;color:#ae81ff&#34;&gt;168&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s7, &lt;span style=&#34;color:#ae81ff&#34;&gt;176&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s8, &lt;span style=&#34;color:#ae81ff&#34;&gt;184&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s9, &lt;span style=&#34;color:#ae81ff&#34;&gt;192&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s10, &lt;span style=&#34;color:#ae81ff&#34;&gt;200&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld s11, &lt;span style=&#34;color:#ae81ff&#34;&gt;208&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t3, &lt;span style=&#34;color:#ae81ff&#34;&gt;216&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t4, &lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t5, &lt;span style=&#34;color:#ae81ff&#34;&gt;232&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        ld t6, &lt;span style=&#34;color:#ae81ff&#34;&gt;240&lt;/span&gt;(sp)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        addi sp, sp, &lt;span style=&#34;color:#ae81ff&#34;&gt;256&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// return to whatever we were doing in the kernel.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// sret将sepc复制到pc中，根据sstatus寄存器的设置，切换到监管者模式，并重新开放中断。
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// resumes the interrupted kernel code
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        sret
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;page-fault-exceptions三个实例&#34;&gt;&lt;a href=&#34;#page-fault-exceptions%e4%b8%89%e4%b8%aa%e5%ae%9e%e4%be%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;page-fault exceptions三个实例
+&lt;/h2&gt;&lt;h3 id=&#34;fork的copy-on-write机制&#34;&gt;&lt;a href=&#34;#fork%e7%9a%84copy-on-write%e6%9c%ba%e5%88%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;fork的copy on write机制
+&lt;/h3&gt;&lt;p&gt;把所有的物理页标记成只读，父子进程其中一个尝试对物理内存进行时，发生缺页异常，给这一页分配新的物理帧，并把父子进程的这两页开放权限为读和写，因为fork的子进程一般很快就会调用exec而结束，所以fork效率非常高。&lt;/p&gt;
+&lt;h3 id=&#34;懒惰分配-lazy-allocation&#34;&gt;&lt;a href=&#34;#%e6%87%92%e6%83%b0%e5%88%86%e9%85%8d-lazy-allocation&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;懒惰分配 Lazy Allocation
+&lt;/h3&gt;&lt;p&gt;用户进程可以调用sbrk请求更多的物理内存的时候，内核只是简单的标记该进程的大小已增长（p-&amp;gt;sz），却不给他分配物理内存，在使用到这个内存的时候，会发生缺页异常，再去分配物理帧。&lt;/p&gt;
+&lt;h3 id=&#34;请求调页-demand-paging&#34;&gt;&lt;a href=&#34;#%e8%af%b7%e6%b1%82%e8%b0%83%e9%a1%b5-demand-paging&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;请求调页 Demand Paging
+&lt;/h3&gt;&lt;p&gt;当需要装载一些页到物理内存中，但RAM的空闲空间不足时，内核此时可以&lt;strong&gt;逐出&lt;/strong&gt;一些物理页，将这些页写到诸如磁盘等地方，同时在相应页表中标记PTE为无效。之后，当别的进程读写这些被逐出的页时，就会产生&lt;strong&gt;缺页错误&lt;/strong&gt;。内核发现这些页已经被换出到磁盘上，因此首先在RAM中为它们找到空间，然后从磁盘上&lt;strong&gt;重新读进这些页&lt;/strong&gt;，改写PTE为有效，更新页表，并且重新执行读写指令。内核在RAM为这些物理页找空间的时候，可能又要逐出别的页。&lt;br&gt;
+这种模式，在满足访存局部性的情况下表现很好，进程在一个时间段内只访问固定一部分物理页，这避免了频繁地换入换出页。&lt;br&gt;
+还有其它一些功能特性也利用了分页和缺页错误来实现，例如自动增长的栈Automatically extending stacks和内存映射文件Memory-mapped files等。&lt;/p&gt;
+&lt;h2 id=&#34;real-world&#34;&gt;&lt;a href=&#34;#real-world&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;real world
+&lt;/h2&gt;&lt;p&gt;如果我们直接将内核的映射也加入用户页表中，甚至可以彻底解决切换页表这样的棘手问题，尤其是我们反复穿梭于内核和用户空间之间，只需要适当地设置相关PTE中的标志位，保证我们建立起来的隔离机制不被破坏。系统调用也能从中受益，例如内核可以直接使用用户指针。&lt;br&gt;
+事实上，很多操作系统就是这么设计的，在效率上的提升很显著。&lt;/p&gt;
+&lt;h1 id=&#34;实验笔记&#34;&gt;&lt;a href=&#34;#%e5%ae%9e%e9%aa%8c%e7%ac%94%e8%ae%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;实验笔记
+&lt;/h1&gt;&lt;h2 id=&#34;参考资料-1&#34;&gt;&lt;a href=&#34;#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99-1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;参考资料
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/331492444&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;安装gdb&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;backtrace&#34;&gt;&lt;a href=&#34;#backtrace&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Backtrace
+&lt;/h2&gt;&lt;p&gt;这个很简单，毕竟我可是做过bomb lab的男人&lt;/p&gt;
+&lt;h2 id=&#34;alarm&#34;&gt;&lt;a href=&#34;#alarm&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Alarm
+&lt;/h2&gt;&lt;p&gt;proc新定义的内容&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; interval; &lt;span style=&#34;color:#75715e&#34;&gt;//the length of period
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  uint64 handler; &lt;span style=&#34;color:#75715e&#34;&gt;//the handler of alarm
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; action; &lt;span style=&#34;color:#75715e&#34;&gt;//the starting position of now-period
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;  uint64 alarming;&lt;span style=&#34;color:#75715e&#34;&gt;//whether it is alarming
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;trapframe&lt;/span&gt; pret;&lt;span style=&#34;color:#75715e&#34;&gt;//saved registers
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;每次时钟中断的时候，就判断是不是满足时间要求。&lt;br&gt;
+满足的话，就把现在myproc()-&amp;gt;epc赋值为handler，这个中断结束之后，pc的值就成了这个handler的地址。&lt;br&gt;
+handler结束执行sigreturn恢复原来的寄存器环境。&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>xv6-book 前三章内容总结</title>
         <link>http://localhost:1313/post/6.s081%E5%89%8D%E4%B8%89%E7%AB%A0/</link>
         <pubDate>Thu, 20 Jun 2024 00:00:00 +0000</pubDate>
@@ -135,7 +669,7 @@
 &lt;li&gt;PTE_R指示这一页物理帧是否能被读。&lt;/li&gt;
 &lt;li&gt;PTE_W指示这一页物理帧是否能被写。&lt;/li&gt;
 &lt;li&gt;PTE_X指示这一页物理帧是否能被CPU看待并转换成指令来执行。&lt;/li&gt;
-&lt;li&gt;PTE_U指示这一页物理帧在用户模式下是否能访问。如果没有置位，则该一页物理帧只能在监管者模式下被访问。
+&lt;li&gt;PTE_U指示这一页物理帧在用户模式下是否能访问。如果没有置位，则该一页物理帧只能在监管者模式下被访问。&lt;br&gt;
 &lt;strong&gt;注意一点，指令永远只使用虚拟地址，虚拟地址转换成物理地址是MMU分页硬件负责的，但是系统刚启动时会通过代码模拟MMU创建内核页表&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;用户虚拟地址空间和内核虚拟地址空间&#34;&gt;&lt;a href=&#34;#%e7%94%a8%e6%88%b7%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e5%92%8c%e5%86%85%e6%a0%b8%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;用户虚拟地址空间和内核虚拟地址空间
