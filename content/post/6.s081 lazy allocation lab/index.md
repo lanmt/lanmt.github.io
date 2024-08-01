@@ -1,3 +1,14 @@
+---
+title: lazy allocation lab
+date: 2024-08-01
+description: lazy allocation lab
+toc: 
+comment: 
+math:
+categories:
+    - 6.s081
+    
+---
 ## eliminate allocation from sbrk()
 在sys_sbrk()函数中把内存增长的语句注释掉就行，不给新增长的内存分配物理帧了
 ```c

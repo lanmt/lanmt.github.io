@@ -3,19 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2024-06-20T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/6.s081/</loc>
-    <lastmod>2024-06-20T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2024-06-20T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/</loc>
-    <lastmod>2024-06-20T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/6.s081-chapter4/</loc>
-    <lastmod>2024-06-20T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/6.s081%E5%89%8D%E4%B8%89%E7%AB%A0/</loc>
     <lastmod>2024-06-20T00:00:00+00:00</lastmod>
@@ -34,6 +34,8 @@
   </url><url>
     <loc>http://localhost:1313/archives/</loc>
     <lastmod>2022-03-06T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/6.s081-lazy-allocation-lab/</loc>
   </url><url>
     <loc>http://localhost:1313/categories/15-213/</loc>
   </url><url>
