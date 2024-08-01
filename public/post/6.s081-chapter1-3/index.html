@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="前三章的内容和实验总结">
+<title>xv6-book Chapter 1-3</title>
+
+<link rel='canonical' href='http://localhost:1313/post/6.s081-chapter1-3/'>
+
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="xv6-book Chapter 1-3">
+<meta property='og:description' content="前三章的内容和实验总结">
+<meta property='og:url' content='http://localhost:1313/post/6.s081-chapter1-3/'>
+<meta property='og:site_name' content='Lanmt O.o'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-03-15T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-03-15T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="xv6-book Chapter 1-3">
+<meta name="twitter:description" content="前三章的内容和实验总结">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/ava_hu31fd57a97e06688c67bdf047cc238154_832905_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Lanmt O.o</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/6.s081/" style="background-color: #2a9d8f; color: #fff;">
+                6.s081
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/6.s081-chapter1-3/">xv6-book Chapter 1-3</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            前三章的内容和实验总结
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 15, 2024</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>Foreword：
+高中的时候真的不会学习，也从来没有感到过学习的乐趣。大学有大部分的时间可以自己安排，自己摸爬滚打了三年，总是有点收获的。首先是自己的状态，生理和心理。其次是“温故而知新”，“温故”真的很重要，另外再加上自己不断的学习，在“温故”的就会遇到很多恍然大悟的瞬间。最后是眼高手低，就像背单词，背写真的很重要，要完全脱离书本，才能知道自己究竟学到了多少。</p>
+<h1 id="总结"><a href="#%e6%80%bb%e7%bb%93" class="header-anchor"></a>总结
+</h1><h2 id="前两章记得一些东西"><a href="#%e5%89%8d%e4%b8%a4%e7%ab%a0%e8%ae%b0%e5%be%97%e4%b8%80%e4%ba%9b%e4%b8%9c%e8%a5%bf" class="header-anchor"></a>前两章记得一些东西
+</h2><ol>
+<li>fork子进程和父进程直观上完全分离，修改子进程的内容，完全不影响父进程的内容</li>
+<li>exec会替换调用它的进程的内存，但是会保留它的文件描述符</li>
+<li>fork复制了文件描述符，但每一个文件当前的偏移仍然是在父子进程之间共享的（这个不用考虑exec，因为exec打开一个进程后不返回，原来的进程不会执行任何操作了）
+比如下面这个代码 <strong>↓</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;sys/stat.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;fcntl.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> fd<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(fd<span style="color:#f92672">==-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    fd <span style="color:#f92672">=</span> <span style="color:#a6e22e">open</span>(<span style="color:#e6db74">&#34;1.txt&#34;</span>,O_RDONLY);
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">fork</span>()<span style="color:#f92672">==</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> buf[<span style="color:#ae81ff">20</span>]<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;********child&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">read</span>(fd,buf,<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,buf);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">read</span>(fd,buf,<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,buf);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> buf[<span style="color:#ae81ff">20</span>]<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;********parnet&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">read</span>(fd,buf,<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,buf);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">read</span>(fd,buf,<span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,buf);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><img src="/post/6.s081-chapter1-3/image-4.png"
+	width="392"
+	height="236"
+	srcset="/post/6.s081-chapter1-3/image-4_huaa2256685643497b56bd7ea9ffc6c08a_20539_480x0_resize_box_3.png 480w, /post/6.s081-chapter1-3/image-4_huaa2256685643497b56bd7ea9ffc6c08a_20539_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="1.txt"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="166"
+		data-flex-basis="398px"
+	
+>
+<img src="/post/6.s081-chapter1-3/image-3.png"
+	width="807"
+	height="125"
+	srcset="/post/6.s081-chapter1-3/image-3_hu7713ff5779c0daa09fe5063bb1931603_33365_480x0_resize_box_3.png 480w, /post/6.s081-chapter1-3/image-3_hu7713ff5779c0daa09fe5063bb1931603_33365_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="输出结果"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="645"
+		data-flex-basis="1549px"
+	
+></p>
+<ol start="4">
+<li>文件描述符是一个强大的抽象，一个进程向描述符1写出，它有可能是一个文件、一个设备、或是一个管道</li>
+<li>稍微记一下pipe。 int pipe(int fd[2]);  往fd[1]写入的数据可以从fd[0]读出</li>
+<li><del>如果 wc 指向了一个管道的写端口，那么 wc 就永远看不到 eof 了。</del><br>
+如果wc执行了一个绑定了写端口的管道，那么wc就永远看不到eof了。</li>
+<li>echo hello world &gt; /tmp/xyz; wc &lt; /tmp/xyz
+但管道和临时文件起码有三个关键的不同点。首先，管道会进行自我清扫，如果是 shell 重定向的话，我们必须要在任务完成后删除 /tmp/xyz。第二，管道可以传输任意长度的数据。第三，管道允许同步：两个进程可以使用一对管道来进行二者之间的信息传递，每一个读操作都阻塞调用进程，直到另一个进程用 write 完成数据的发送。</li>
+<li>父进程中创建的pipe的读写端口和子进程的读写端口是独立的，不想让read一直阻塞，就要把父进程和子进程的读写端口都close了。（同第六条）</li>
+<li>RISC-V cpu有三个执行指令有三个模式：<strong>user mode、supervisor mode、machine mode</strong>。xv6是monolithc kernel，操作系统所有的代码都以supervisor mode执行指令，unix 都是这样？ 另外还有microkernel的操作系统，它尽可能让指令以user mode执行指令。supervisor mode执行的指令出问题经常会导致内核崩溃，整个机器就g了。</li>
+<li>一个进程有一个执行代码用的执行线程，一个进程的内存空间分为两部分，user区和kernel区，kernel区有trampoline和trapframe，trampoline是进出kernel用的，trapframe是保存/恢复进程状态用的。 恢复一个线程时，这个线程的大部分状态都保存在线程的栈上。</li>
+<li>一个进程有两个栈，user stack 和 kernel stack。执行user指令的时候，只用到user stack，kernel stack是空的。进程用到系统调用或者中断的时候，kernel（内核）的代码，将执行在这个进程的kernel stack上，user stack还是原来的数据，但是用不到了。</li>
+<li>RIST-V上的进程可以使用ecall指令，提高程序对硬件的权限，进入到kernel定义的入口。使用sret指令在回到用户空间。</li>
+<li>第一个用户进程怎么运行的：<br>
+①. 一个保存在ROM的引导加载程序加载到物理内存。（好像是在哪个文件里，静态的定义在一个数组。）<br>
+②. 初始化一个栈，将栈顶放到sp寄存器，跳转到start。<br>
+③. 在machine mode 完成一些初始的配置工作。在mstatus寄存器中设置为supervisor mode，然后将main函数的地址写入到mepc寄存器中，通过对satp寄存器清0禁用页表。现在中断和异常都由监管者模式下处理，并设置好计时器，可以产生时钟中断。<br>
+④. 通过mret将start函数返回到main函数，现在正式处于监管者模式运行。<br>
+⑤. 调用userinit函数创建第一个进程，exec（/init），init随后完成一些设置，包括创建一个控制台、文件描述符012、新建一个子进程运行shell。</li>
+<li>在用户代码执行exec，请求系统调用函数exec，用户参数放在a0和a1，系统调用号放在a7，然后执行ecall。然后执行syscall函数，通过函数指针执行相应的系统调用。然后就执行系统调用sys_exec，完成一些检查和相关参数复制，就执行kernel/exec.c中的内容。最后系统调用结束会有一个返回值，放在trapframe的a0中。</li>
+<li>用户传来的虚拟地址（参数），通过一系列函数（在中间有个walkaddr函数检查是否在用户的页表中）转换成内核的虚拟地址，<strong>xv6内核的虚拟地址和物理地址是直接映射的</strong>，就可以去读取用户传来的参数了。（看不懂自己写的东西了，，为什么用户传来的虚拟地址要转换成内核的虚拟地址？？？）</li>
+<li>TLB和普通的缓存工作的顺序：cpu首先处理的是virtual address，会先转换成物理地址（这里会使用TLB加速），然后有物理内存之后，再去访问普通的缓存，看这个地址是否在cache中，否则会继续向主存访问。</li>
+</ol>
+<h2 id="对页表的理解"><a href="#%e5%af%b9%e9%a1%b5%e8%a1%a8%e7%9a%84%e7%90%86%e8%a7%a3" class="header-anchor"></a>对页表的理解
+</h2><p><img src="/post/6.s081-chapter1-3/%E4%B8%89%E7%BA%A7%E9%A1%B5%E8%A1%A8%E7%BB%93%E6%9E%84.png"
+	width="906"
+	height="424"
+	srcset="/post/6.s081-chapter1-3/%E4%B8%89%E7%BA%A7%E9%A1%B5%E8%A1%A8%E7%BB%93%E6%9E%84_hu7b0ff418c8d4f0589e005304b044f9af_45820_480x0_resize_box_3.png 480w, /post/6.s081-chapter1-3/%E4%B8%89%E7%BA%A7%E9%A1%B5%E8%A1%A8%E7%BB%93%E6%9E%84_hu7b0ff418c8d4f0589e005304b044f9af_45820_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="三级页表结构"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="512px"
+	
+>
+<img src="/post/6.s081-chapter1-3/image-2.png"
+	width="698"
+	height="227"
+	srcset="/post/6.s081-chapter1-3/image-2_hu620d91d9772dd4b6b6d2bebecaad6d2b_25161_480x0_resize_box_3.png 480w, /post/6.s081-chapter1-3/image-2_hu620d91d9772dd4b6b6d2bebecaad6d2b_25161_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="PTE"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="307"
+		data-flex-basis="737px"
+	
+></p>
+<h3 id="heading"><a href="#heading" class="header-anchor"></a>
+</h3><p>页表存在于物理内存中，地址放在satp寄存器里，当需要从一个虚拟地址转换乘物理地址的时候，就需要把这个虚拟地址中间的27位拆开一层一层寻址，图中PPN和Flags就是一个pte(page table entry)，其中flag包括一些标志位\</p>
+<ul>
+<li>PTE_V指示PTE是否存在/有效。如果不存在，尝试引用该页时就会引发一个缺页错误异常。</li>
+<li>PTE_R指示这一页物理帧是否能被读。</li>
+<li>PTE_W指示这一页物理帧是否能被写。</li>
+<li>PTE_X指示这一页物理帧是否能被CPU看待并转换成指令来执行。</li>
+<li>PTE_U指示这一页物理帧在用户模式下是否能访问。如果没有置位，则该一页物理帧只能在监管者模式下被访问。<br>
+<strong>注意一点，指令永远只使用虚拟地址，虚拟地址转换成物理地址是MMU分页硬件负责的，但是系统刚启动时会通过代码模拟MMU创建内核页表</strong></li>
+</ul>
+<h2 id="用户虚拟地址空间和内核虚拟地址空间"><a href="#%e7%94%a8%e6%88%b7%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4%e5%92%8c%e5%86%85%e6%a0%b8%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4" class="header-anchor"></a>用户虚拟地址空间和内核虚拟地址空间
+</h2><h3 id="内核虚拟地址空间"><a href="#%e5%86%85%e6%a0%b8%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4" class="header-anchor"></a>内核虚拟地址空间
+</h3><p><img src="/post/6.s081-chapter1-3/image.png"
+	width="788"
+	height="616"
+	srcset="/post/6.s081-chapter1-3/image_hu8528dd82de6230c07bda7cff37ba153e_64919_480x0_resize_box_3.png 480w, /post/6.s081-chapter1-3/image_hu8528dd82de6230c07bda7cff37ba153e_64919_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="内核虚拟地址空间"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="127"
+		data-flex-basis="307px"
+	
+><br>
+从KERNBASE向上才对应RAM的存储空间，访问下方的物理地址，实际上是直接访问相关的I/O设备的控制寄存器
+未使用页表的时候，访问RAM时，内核的虚拟地址会采用直接映射的方式进行转换，这种直接映射，也会在初始化内核页表的过程(kernel/vm.c)中保留下来。虚拟地址的顶端有个trampline页，再往下是每个用户的内核栈，每个内核栈上面有一个guard page，PTE_V标记为无效，防止越界破坏内核空间，guard page并没有实际的物理帧对应。</p>
+<h3 id="用户虚拟地址空间"><a href="#%e7%94%a8%e6%88%b7%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4" class="header-anchor"></a>用户虚拟地址空间
+</h3><p><img src="/post/6.s081-chapter1-3/image-1.png"
+	width="672"
+	height="426"
+	srcset="/post/6.s081-chapter1-3/image-1_hu7060a6e990d85ee221b660c79e70a353_54604_480x0_resize_box_3.png 480w, /post/6.s081-chapter1-3/image-1_hu7060a6e990d85ee221b660c79e70a353_54604_1024x0_resize_box_3.png 1024w"
+	loading="lazy"
+	
+		alt="alt text"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="157"
+		data-flex-basis="378px"
+	
+>
+<strong>用户的虚拟地址空间是连续的</strong>，这个体现在释放内存空间的时候，只需要从0地址开始，释放p-&gt;sz大小的内存就行了。与内核虚拟地址空间不同，用户stack是从上向下申请内存，guard page在stack的下面，而且用实际的物理帧对应。xv6为了简便，data和text放在了同一个页，实际的操作系统都是放在不同的页内。</p>
+<h2 id="elf二进制文件"><a href="#elf%e4%ba%8c%e8%bf%9b%e5%88%b6%e6%96%87%e4%bb%b6" class="header-anchor"></a>ELF二进制文件
+</h2><p>大改这样组成：一个ELF Header，后面紧跟一系列的Program Section Headers。每个Program Section Headers都对应一段需要加载到内存中的程序，xv6中只有一个，其他的操作系统可能有很多个。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// File header
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> elfhdr {
+</span></span><span style="display:flex;"><span>  uint magic;  <span style="color:#75715e">// must equal ELF_MAGIC
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  uchar elf[<span style="color:#ae81ff">12</span>];
+</span></span><span style="display:flex;"><span>  ushort type;
+</span></span><span style="display:flex;"><span>  ushort machine;
+</span></span><span style="display:flex;"><span>  uint version;
+</span></span><span style="display:flex;"><span>  uint64 entry;
+</span></span><span style="display:flex;"><span>  uint64 phoff;
+</span></span><span style="display:flex;"><span>  uint64 shoff;
+</span></span><span style="display:flex;"><span>  uint flags;
+</span></span><span style="display:flex;"><span>  ushort ehsize;
+</span></span><span style="display:flex;"><span>  ushort phentsize;
+</span></span><span style="display:flex;"><span>  ushort phnum;
+</span></span><span style="display:flex;"><span>  ushort shentsize;
+</span></span><span style="display:flex;"><span>  ushort shnum;
+</span></span><span style="display:flex;"><span>  ushort shstrndx;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Program section header
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> proghdr {
+</span></span><span style="display:flex;"><span>  uint32 type;
+</span></span><span style="display:flex;"><span>  uint32 flags;
+</span></span><span style="display:flex;"><span>  uint64 off;
+</span></span><span style="display:flex;"><span>  uint64 vaddr;
+</span></span><span style="display:flex;"><span>  uint64 paddr;
+</span></span><span style="display:flex;"><span>  uint64 filesz;
+</span></span><span style="display:flex;"><span>  uint64 memsz;
+</span></span><span style="display:flex;"><span>  uint64 align;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Format of an ELF executable file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define ELF_MAGIC 0x464C457FU  </span><span style="color:#75715e">// &#34;\x7FELF&#34; in little endian
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 这里有个魔数哎
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Values for Proghdr type
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define ELF_PROG_LOAD           1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Flag bits for Proghdr flags
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define ELF_PROG_FLAG_EXEC      1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define ELF_PROG_FLAG_WRITE     2
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define ELF_PROG_FLAG_READ      4
+</span></span></span></code></pre></div><h2 id="执行一个elf文件的过程"><a href="#%e6%89%a7%e8%a1%8c%e4%b8%80%e4%b8%aaelf%e6%96%87%e4%bb%b6%e7%9a%84%e8%bf%87%e7%a8%8b" class="header-anchor"></a>执行一个ELF文件的过程
+</h2><p>使用exec读取文件之后，首先检查文件是否为ELF文件</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// 也就是检查魔数是不是0x464C457FU
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">readi</span>(ip, <span style="color:#ae81ff">0</span>, (uint64)<span style="color:#f92672">&amp;</span>elf, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(elf)) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">sizeof</span>(elf))
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(elf.magic <span style="color:#f92672">!=</span> ELF_MAGIC)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">goto</span> bad;
+</span></span></code></pre></div><p>然后调用proc_pagetable,创建一个新页表，添加trampoline和trapframe的映射</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">if</span>((pagetable <span style="color:#f92672">=</span> <span style="color:#a6e22e">proc_pagetable</span>(p)) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Create a user page table for a given process,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// with no user memory, but with trampoline pages.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pagetable_t</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">proc_pagetable</span>(<span style="color:#66d9ef">struct</span> proc <span style="color:#f92672">*</span>p)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">pagetable_t</span> pagetable;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// An empty page table.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  pagetable <span style="color:#f92672">=</span> <span style="color:#a6e22e">uvmcreate</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(pagetable <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// map the trampoline code (for system call return)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// at the highest user virtual address.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// only the supervisor uses it, on the way
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// to/from user space, so not PTE_U.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">mappages</span>(pagetable, TRAMPOLINE, PGSIZE,
+</span></span><span style="display:flex;"><span>              (uint64)trampoline, PTE_R <span style="color:#f92672">|</span> PTE_X) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">uvmfree</span>(pagetable, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// map the trapframe just below TRAMPOLINE, for trampoline.S.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">mappages</span>(pagetable, TRAPFRAME, PGSIZE,
+</span></span><span style="display:flex;"><span>              (uint64)(p<span style="color:#f92672">-&gt;</span>trapframe), PTE_R <span style="color:#f92672">|</span> PTE_W) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">uvmunmap</span>(pagetable, TRAMPOLINE, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">uvmfree</span>(pagetable, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> pagetable;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// create an empty user page table.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// returns 0 if out of memory.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">pagetable_t</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uvmcreate</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">pagetable_t</span> pagetable;
+</span></span><span style="display:flex;"><span>  pagetable <span style="color:#f92672">=</span> (<span style="color:#66d9ef">pagetable_t</span>) <span style="color:#a6e22e">kalloc</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(pagetable <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">memset</span>(pagetable, <span style="color:#ae81ff">0</span>, PGSIZE);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> pagetable;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后，exec对于每个程序段，先是调用uvmalloc分配足够的物理帧，更新了用户页表。然后调用loadseg加载程序段到这些物理帧中。loadseg将虚拟地址传给walkaddr，walkaddr又通过walk查找相关PTE，将va转换为pa，最后walkaddr成功返回uvmalloc分配的物理帧的物理地址，loadseg再调用readi，真正地将程序段加载到物理内存中。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Load program into memory
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span>(i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, off<span style="color:#f92672">=</span>elf.phoff; i<span style="color:#f92672">&lt;</span>elf.phnum; i<span style="color:#f92672">++</span>, off<span style="color:#f92672">+=</span><span style="color:#66d9ef">sizeof</span>(ph)){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">readi</span>(ip, <span style="color:#ae81ff">0</span>, (uint64)<span style="color:#f92672">&amp;</span>ph, off, <span style="color:#66d9ef">sizeof</span>(ph)) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">sizeof</span>(ph))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(ph.type <span style="color:#f92672">!=</span> ELF_PROG_LOAD)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">continue</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(ph.memsz <span style="color:#f92672">&lt;</span> ph.filesz)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(ph.vaddr <span style="color:#f92672">+</span> ph.memsz <span style="color:#f92672">&lt;</span> ph.vaddr)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  uint64 sz1;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 通过uvmalloc为每个ELF段分配内存
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 刚分配的内存是全的0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>((sz1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">uvmalloc</span>(pagetable, sz, ph.vaddr <span style="color:#f92672">+</span> ph.memsz)) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  sz <span style="color:#f92672">=</span> sz1;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(ph.vaddr <span style="color:#f92672">%</span> PGSIZE <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 然后通过loadseg把段的内容载入物理内存中
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// loadseg通过walkaddr找到写入ELF段的内存的物理地址；通过readi来将段的内容从文件中读出
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">loadseg</span>(pagetable, ph.vaddr, ip, ph.off, ph.filesz) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Load a program segment into pagetable at virtual address va.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// va must be page-aligned
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// and the pages from va to va+sz must already be mapped.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Returns 0 on success, -1 on failure.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">loadseg</span>(<span style="color:#66d9ef">pagetable_t</span> pagetable, uint64 va, <span style="color:#66d9ef">struct</span> inode <span style="color:#f92672">*</span>ip, uint offset, uint sz)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  uint i, n;
+</span></span><span style="display:flex;"><span>  uint64 pa;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>((va <span style="color:#f92672">%</span> PGSIZE) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;loadseg: va must be page aligned&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span>(i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> sz; i <span style="color:#f92672">+=</span> PGSIZE){
+</span></span><span style="display:flex;"><span>    pa <span style="color:#f92672">=</span> <span style="color:#a6e22e">walkaddr</span>(pagetable, va <span style="color:#f92672">+</span> i);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(pa <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;loadseg: address should exist&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(sz <span style="color:#f92672">-</span> i <span style="color:#f92672">&lt;</span> PGSIZE)
+</span></span><span style="display:flex;"><span>      n <span style="color:#f92672">=</span> sz <span style="color:#f92672">-</span> i;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>      n <span style="color:#f92672">=</span> PGSIZE;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">readi</span>(ip, <span style="color:#ae81ff">0</span>, (uint64)pa, offset<span style="color:#f92672">+</span>i, n) <span style="color:#f92672">!=</span> n)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Look up a virtual address, return the physical address,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// or 0 if not mapped.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Can only be used to look up user pages.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>uint64
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">walkaddr</span>(<span style="color:#66d9ef">pagetable_t</span> pagetable, uint64 va)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">pte_t</span> <span style="color:#f92672">*</span>pte;
+</span></span><span style="display:flex;"><span>  uint64 pa;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(va <span style="color:#f92672">&gt;=</span> MAXVA)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  pte <span style="color:#f92672">=</span> <span style="color:#a6e22e">walk</span>(pagetable, va, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(pte <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>((<span style="color:#f92672">*</span>pte <span style="color:#f92672">&amp;</span> PTE_V) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>((<span style="color:#f92672">*</span>pte <span style="color:#f92672">&amp;</span> PTE_U) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  pa <span style="color:#f92672">=</span> <span style="color:#a6e22e">PTE2PA</span>(<span style="color:#f92672">*</span>pte);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> pa;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>现在TRAMPOLINE、TRAPFRAME、各程序段都装载完成了，（这个程序段是在外存读进来的吗？不懂。。。），接下来就是分配并初始化用户栈,对比用户虚拟地址空间。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// 到这里，用户空间的text和data都已经加载完毕了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Allocate two pages at the next page boundary.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 紧接着data的位置向上继续分配两个页，第一页用作guard page，第二页用作user stack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// ustack中的前三项就是伪造的返回PC值，argc和argv指针
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sz <span style="color:#f92672">=</span> <span style="color:#a6e22e">PGROUNDUP</span>(sz);
+</span></span><span style="display:flex;"><span>uint64 sz1;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>((sz1 <span style="color:#f92672">=</span> <span style="color:#a6e22e">uvmalloc</span>(pagetable, sz, sz <span style="color:#f92672">+</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>PGSIZE)) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>sz <span style="color:#f92672">=</span> sz1;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// uvmclear将PTE_U设为无效，因此这一页用作保护页
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">uvmclear</span>(pagetable, sz<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>PGSIZE); 
+</span></span><span style="display:flex;"><span>sp <span style="color:#f92672">=</span> sz;
+</span></span><span style="display:flex;"><span>stackbase <span style="color:#f92672">=</span> sp <span style="color:#f92672">-</span> PGSIZE;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Push argument strings, prepare rest of stack in ustack.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span>(argc <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; argv[argc]; argc<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(argc <span style="color:#f92672">&gt;=</span> MAXARG)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  sp <span style="color:#f92672">-=</span> <span style="color:#a6e22e">strlen</span>(argv[argc]) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  sp <span style="color:#f92672">-=</span> sp <span style="color:#f92672">%</span> <span style="color:#ae81ff">16</span>; <span style="color:#75715e">// riscv sp must be 16-byte aligned
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>(sp <span style="color:#f92672">&lt;</span> stackbase)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">copyout</span>(pagetable, sp, argv[argc], <span style="color:#a6e22e">strlen</span>(argv[argc]) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 保护页还让exec能够处理那些过于庞大的参数；当参数过于庞大时，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// exec 用于将参数拷贝到栈上的函数copyout会发现目标页无法访问，并且返回-1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>  ustack[argc] <span style="color:#f92672">=</span> sp;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>ustack[argc] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// push the array of argv[] pointers.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>sp <span style="color:#f92672">-=</span> (argc<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">*</span> <span style="color:#66d9ef">sizeof</span>(uint64);
+</span></span><span style="display:flex;"><span>sp <span style="color:#f92672">-=</span> sp <span style="color:#f92672">%</span> <span style="color:#ae81ff">16</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(sp <span style="color:#f92672">&lt;</span> stackbase)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">copyout</span>(pagetable, sp, (<span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>)ustack, (argc<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">*</span><span style="color:#66d9ef">sizeof</span>(uint64)) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">goto</span> bad;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// arguments to user main(argc, argv)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// argc is returned via the system call return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// value, which goes in a0.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 现在的sp指向argv[]数组，argc通过a0寄存器i 返回
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>p<span style="color:#f92672">-&gt;</span>trapframe<span style="color:#f92672">-&gt;</span>a1 <span style="color:#f92672">=</span> sp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Save program name for debugging.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span>(last<span style="color:#f92672">=</span>s<span style="color:#f92672">=</span>path; <span style="color:#f92672">*</span>s; s<span style="color:#f92672">++</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#f92672">*</span>s <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;/&#39;</span>)
+</span></span><span style="display:flex;"><span>    last <span style="color:#f92672">=</span> s<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">safestrcpy</span>(p<span style="color:#f92672">-&gt;</span>name, last, <span style="color:#66d9ef">sizeof</span>(p<span style="color:#f92672">-&gt;</span>name));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Commit to the user image.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>oldpagetable <span style="color:#f92672">=</span> p<span style="color:#f92672">-&gt;</span>pagetable;
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">-&gt;</span>pagetable <span style="color:#f92672">=</span> pagetable;
+</span></span><span style="display:flex;"><span>p<span style="color:#f92672">-&gt;</span>sz <span style="color:#f92672">=</span> sz;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 注意，在用户进程被创建的时候，这里就将返回到main的pc值放到寄存器epc里面
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>p<span style="color:#f92672">-&gt;</span>trapframe<span style="color:#f92672">-&gt;</span>epc <span style="color:#f92672">=</span> elf.entry;  <span style="color:#75715e">// initial program counter = main
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>p<span style="color:#f92672">-&gt;</span>trapframe<span style="color:#f92672">-&gt;</span>sp <span style="color:#f92672">=</span> sp; <span style="color:#75715e">// initial stack pointer
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">proc_freepagetable</span>(oldpagetable, oldsz);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// the C calling convention on RISC-V places return values in a0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">return</span> argc; <span style="color:#75715e">// this ends up in a0, the first argument to main(argc, argv)
+</span></span></span></code></pre></div><h1 id="实验总结"><a href="#%e5%ae%9e%e9%aa%8c%e6%80%bb%e7%bb%93" class="header-anchor"></a>实验总结
+</h1><p>这节实验有点难啊，可以说最后以失败告终，一直找不到问题出在哪里，但是看了别人写的实验记录，还是有点收获和感悟的。</p>
+<h2 id="print-a-page-table"><a href="#print-a-page-table" class="header-anchor"></a>Print a page table
+</h2><p>这个比较简单，清楚页表的结构，会用指针就很容易实现。这个实验我写了两次，刚开始没有理解，一直纠结pte前面的pnn里是不是也是虚拟地址。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">_vmprint</span>(<span style="color:#66d9ef">pagetable_t</span> pagetable, <span style="color:#66d9ef">int</span> level) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">512</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pte_t</span> pte <span style="color:#f92672">=</span> pagetable[i];
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> (pte <span style="color:#f92672">&amp;</span> PTE_V) {
+</span></span><span style="display:flex;"><span>      uint64 pa <span style="color:#f92672">=</span> <span style="color:#a6e22e">PTE2PA</span>(pte);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> level; j<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">if</span> (j) <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34; &#34;</span>);
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;..&#34;</span>);
+</span></span><span style="display:flex;"><span>	  }
+</span></span><span style="display:flex;"><span>	  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%d: pte %p pa %p</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, i, pte, pa);
+</span></span><span style="display:flex;"><span>	  <span style="color:#66d9ef">if</span> ((pte <span style="color:#f92672">&amp;</span> (PTE_R <span style="color:#f92672">|</span> PTE_W <span style="color:#f92672">|</span> PTE_X)) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>	    <span style="color:#a6e22e">_vmprint</span>((<span style="color:#66d9ef">pagetable_t</span>)pa, level<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>	  }
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">vmprint</span>(<span style="color:#66d9ef">pagetable_t</span> pagetable) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;page table %p</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, pagetable);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">_vmprint</span>(pagetable, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="a-kernel-page-table-per-process"><a href="#a-kernel-page-table-per-process" class="header-anchor"></a>A kernel page table per process
+</h2><p>实验大意就是用户使用虚拟地址要转换成物理地址，但是内核页表因为是直接映射的，所以就不需要转换，这个任务就是给每个进程都组织一个内核空间（其实就是维护一个页表）</p>
+<p>首先仿照（kernel/vm.c）kvminit函数创建一个页表，然后分配各个页</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">ukvmmap</span>(<span style="color:#66d9ef">pagetable_t</span> kpagetable, uint64 va, uint64 pa, uint64 sz, <span style="color:#66d9ef">int</span> perm) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">mappages</span>(kpagetable, va, sz, pa, perm) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;uvmmap&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pagetable_t</span> <span style="color:#a6e22e">ukvminit</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">pagetable_t</span> kpagetable <span style="color:#f92672">=</span> (<span style="color:#66d9ef">pagetable_t</span>) <span style="color:#a6e22e">kalloc</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">memset</span>(kpagetable, <span style="color:#ae81ff">0</span>, PGSIZE);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, UART0, UART0, PGSIZE, PTE_R <span style="color:#f92672">|</span> PTE_W);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, VIRTIO0, VIRTIO0, PGSIZE, PTE_R <span style="color:#f92672">|</span> PTE_W);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, CLINT, CLINT, <span style="color:#ae81ff">0x10000</span>, PTE_R <span style="color:#f92672">|</span> PTE_W);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, PLIC, PLIC, <span style="color:#ae81ff">0x400000</span>, PTE_R <span style="color:#f92672">|</span> PTE_W);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, KERNBASE, KERNBASE, (uint64)etext<span style="color:#f92672">-</span>KERNBASE, PTE_R <span style="color:#f92672">|</span> PTE_X);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, (uint64)etext, (uint64)etext, PHYSTOP<span style="color:#f92672">-</span>(uint64)etext, PTE_R <span style="color:#f92672">|</span> PTE_W);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(kpagetable, TRAMPOLINE, (uint64)trampoline, PGSIZE, PTE_R <span style="color:#f92672">|</span> PTE_X);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> kpagetable;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>在kernel/proc.c中的allocproc函数中添加调用函数的代码</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// An empty user kernel page table.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  p<span style="color:#f92672">-&gt;</span>kpagetable <span style="color:#f92672">=</span> <span style="color:#a6e22e">ukvminit</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(p<span style="color:#f92672">-&gt;</span>kpagetable <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">freeproc</span>(p);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>p<span style="color:#f92672">-&gt;</span>lock);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div><p>然后把每个进程的内核栈放在他自己的内核空间中</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>pa <span style="color:#f92672">=</span> <span style="color:#a6e22e">kalloc</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(pa <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;kalloc&#34;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// KSTACK会直接分配两个页，因为每个进程的内核空间只有他自己的
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 内核栈，所以用一个没有使用的地址就可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  uint64 va <span style="color:#f92672">=</span> <span style="color:#a6e22e">KSTACK</span>((<span style="color:#66d9ef">int</span>)TRAMPOLINE <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>PGSIZE);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">ukvmmap</span>(p<span style="color:#f92672">-&gt;</span>kpagetable, va, (uint64)pa, PGSIZE, PTE_R <span style="color:#f92672">|</span> PTE_W);
+</span></span><span style="display:flex;"><span>  p<span style="color:#f92672">-&gt;</span>kstack <span style="color:#f92672">=</span> va;
+</span></span></code></pre></div><p>进程调度时，切换satp寄存器，使用kpagetable</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// change satp
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">w_satp</span>(<span style="color:#a6e22e">MAKE_SATP</span>(p<span style="color:#f92672">-&gt;</span>kpagetable));
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">sfence_vma</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 没有runnable的进程就使用内核的页表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">kvminithart</span>();
+</span></span></code></pre></div><p>释放进程的时候，先释放页表的内核栈，因为内核栈的地址是一个虚拟地址，不是直接映射的，用户的内核页表没有记录，所以要先释放。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// delete kstack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>(p<span style="color:#f92672">-&gt;</span>kstack) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pte_t</span><span style="color:#f92672">*</span> pte <span style="color:#f92672">=</span> <span style="color:#a6e22e">walk</span>(p<span style="color:#f92672">-&gt;</span>kpagetable, p<span style="color:#f92672">-&gt;</span>kstack, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(pte <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;freeproc: walk&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">kfree</span>((<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)<span style="color:#a6e22e">PTE2PA</span>(<span style="color:#f92672">*</span>pte));
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  p<span style="color:#f92672">-&gt;</span>kstack <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span></code></pre></div><p>然后释放用户的内核页表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">proc_freewalk</span>(<span style="color:#66d9ef">pagetable_t</span> pagetable) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">512</span>; i<span style="color:#f92672">++</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pte_t</span> pte <span style="color:#f92672">=</span> pagetable[i];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (pte <span style="color:#f92672">&amp;</span> PTE_V) {
+</span></span><span style="display:flex;"><span>      pagetable[i] <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> ((pte <span style="color:#f92672">&amp;</span> (PTE_R <span style="color:#f92672">|</span> PTE_W <span style="color:#f92672">|</span> PTE_X)) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>        uint64 child <span style="color:#f92672">=</span> <span style="color:#a6e22e">PTE2PA</span>(pte);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">proc_freewalk</span>((<span style="color:#66d9ef">pagetable_t</span>)child);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">kfree</span>((<span style="color:#66d9ef">void</span><span style="color:#f92672">*</span>)pagetable);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="simplify-copyincopyinstr"><a href="#simplify-copyincopyinstr" class="header-anchor"></a>Simplify copyin/copyinstr
+</h2><p>内核的copyin函数读取用户指针指向的内存。它先将它们翻译为物理地址（内核可以直接用）。通过代码walk进程页表实现翻译。
+在此实验中，你的工作是给每个进程的内核页表添加用户映射，使得copyin可以直接使用用户指针。</p>
+<p>因为用户虚拟内存空间是从0开始分配的，而用户的内核地址空间（kpagetable组织的）0x0C000000以下都没用，所以就可以把用户页表的所有pte复制到kpagetable，但是要注意判断是否超过了0x0C000000。</p>
+<p>这个并不是很难，只是下面这个复制条目的不好写</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">u2kvmcopy</span>(<span style="color:#66d9ef">pagetable_t</span> upagetable, <span style="color:#66d9ef">pagetable_t</span> kpagetable, uint64 oldsz, uint64 newsz) {
+</span></span><span style="display:flex;"><span>  oldsz <span style="color:#f92672">=</span> <span style="color:#a6e22e">PGROUNDUP</span>(oldsz);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">for</span> (uint64 i <span style="color:#f92672">=</span> oldsz; i <span style="color:#f92672">&lt;</span> newsz; i <span style="color:#f92672">+=</span> PGSIZE) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pte_t</span><span style="color:#f92672">*</span> pte_from <span style="color:#f92672">=</span> <span style="color:#a6e22e">walk</span>(upagetable, i, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pte_t</span><span style="color:#f92672">*</span> pte_to <span style="color:#f92672">=</span> <span style="color:#a6e22e">walk</span>(kpagetable, i, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(pte_from <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;u2kvmcopy: src pte do not exist&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(pte_to <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;u2kvmcopy: dest pte walk fail&#34;</span>);
+</span></span><span style="display:flex;"><span>    uint64 pa <span style="color:#f92672">=</span> <span style="color:#a6e22e">PTE2PA</span>(<span style="color:#f92672">*</span>pte_from);
+</span></span><span style="display:flex;"><span>    uint flag <span style="color:#f92672">=</span> (<span style="color:#a6e22e">PTE_FLAGS</span>(<span style="color:#f92672">*</span>pte_from)) <span style="color:#f92672">&amp;</span> (<span style="color:#f92672">~</span>PTE_U);
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">*</span>pte_to <span style="color:#f92672">=</span> <span style="color:#a6e22e">PA2PTE</span>(pa) <span style="color:#f92672">|</span> flag;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>fork执行的时候子进程会复制父进程的内存映像</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>  <span style="color:#75715e">//这里子进程已经生成了kpagetable，但是用户pagetable的低地址还没复制到kpagetable的高地址
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// Allocate process.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>((np <span style="color:#f92672">=</span> <span style="color:#a6e22e">allocproc</span>()) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Copy user memory from parent to child.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">uvmcopy</span>(p<span style="color:#f92672">-&gt;</span>pagetable, np<span style="color:#f92672">-&gt;</span>pagetable, p<span style="color:#f92672">-&gt;</span>sz) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">panic</span>(<span style="color:#e6db74">&#34;fork:uvmcopy</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">freeproc</span>(np);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>np<span style="color:#f92672">-&gt;</span>lock);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span></code></pre></div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            1234 - 
+        
+        2024 Lanmt O.o
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

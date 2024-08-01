@@ -1,6 +1,6 @@
 ---
 title: xv6-book Chapter 4:Traps and system calls
-date: 2024-08-01
+date: 2024-03-20
 description: notes and trap lab
 toc: 
 comment: 

@@ -1,6 +1,6 @@
 ---
 title: lazy allocation lab
-date: 2024-08-01
+date: 2024-03-20
 description: lazy allocation lab
 toc: 
 comment: 

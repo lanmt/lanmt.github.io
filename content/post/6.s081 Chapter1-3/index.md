@@ -1,6 +1,6 @@
 ---
-title: xv6-book 前三章内容总结
-date: 2024-06-20
+title: xv6-book Chapter 1-3
+date: 2024-03-15
 description: 前三章的内容和实验总结 
 toc: 
 comment: 
