@@ -3,7 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2024-08-18T00:00:00+00:00</lastmod>
+    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/6.s081/</loc>
+    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/</loc>
+    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/post/6.s081-chapter6/</loc>
+    <lastmod>2024-08-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%AF%AD/</loc>
     <lastmod>2024-08-18T00:00:00+00:00</lastmod>
@@ -11,23 +23,11 @@
     <loc>http://localhost:1313/categories/algorithm/</loc>
     <lastmod>2024-08-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-    <lastmod>2024-08-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/post/</loc>
-    <lastmod>2024-08-18T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%9D%BF%E5%AD%90/</loc>
     <lastmod>2024-08-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/</loc>
     <lastmod>2024-08-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/6.s081/</loc>
-    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/post/6.s081-chapter6/</loc>
-    <lastmod>2024-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/2024.8.13/</loc>
     <lastmod>2024-08-13T00:00:00+00:00</lastmod>
