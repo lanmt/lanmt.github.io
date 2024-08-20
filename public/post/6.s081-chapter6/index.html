@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Locking">
+<title>xv6-book Chapter 6:Locking</title>
+
+<link rel='canonical' href='http://localhost:1313/post/6.s081-chapter6/'>
+
+<link rel="stylesheet" href="/scss/style.min.e8c7fca7d1c9294aa7a4f3426c225ee26540f7d94e39be0b5a4a5c8a49ca5a25.css"><meta property='og:title' content="xv6-book Chapter 6:Locking">
+<meta property='og:description' content="Locking">
+<meta property='og:url' content='http://localhost:1313/post/6.s081-chapter6/'>
+<meta property='og:site_name' content='Lanmt O.o'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-08-16T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2024-08-16T00:00:00&#43;00:00'/>
+<meta name="twitter:title" content="xv6-book Chapter 6:Locking">
+<meta name="twitter:description" content="Locking">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column compact"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/ava_hu31fd57a97e06688c67bdf047cc238154_832905_300x0_resize_box_3.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Lanmt O.o</a></h1>
+            <h2 class="site-description"></h2>
+        </div>
+    </header><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>Dark Mode</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/6.s081/" style="background-color: #2a718c; color: #fff;">
+                6.s081
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/post/6.s081-chapter6/">xv6-book Chapter 6:Locking</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Locking
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 16, 2024</time>
+            </div>
+        
+
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="device-driver"><a href="#device-driver" class="header-anchor"></a>Device driver
+</h2><p>设备驱动程序是一段驻留在操作系统的代码，用于管理特定的硬件设备。驱动程序负责设置好这些硬件设备，告诉设备要执行什么动作，处理设备产生的中断，并与正在等待该设备的上层用户进行交互等。<br>
+通常情况下，大多数的设备驱动程序，都可以看成一个分上下部分的结构：顶部top half运行在内核空间中，通常由某一个进程的内核线程来运行，而底部bottom half则在中断产生时执行，大体上就是Interrupt handler（比如uartintr）。</p>
+<h2 id="同步和异步"><a href="#%e5%90%8c%e6%ad%a5%e5%92%8c%e5%bc%82%e6%ad%a5" class="header-anchor"></a>同步和异步
+</h2><h5 id="同步和异步httpszhuanlanzhihucomp270428703"><a href="#%e5%90%8c%e6%ad%a5%e5%92%8c%e5%bc%82%e6%ad%a5httpszhuanlanzhihucomp270428703" class="header-anchor"></a><a class="link" href="https://zhuanlan.zhihu.com/p/270428703"  target="_blank" rel="noopener"
+    >同步和异步</a>
+</h5><h3 id="同步"><a href="#%e5%90%8c%e6%ad%a5" class="header-anchor"></a>同步
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">funcA</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 等待函数funcB执行完成
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">funcB</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 继续接下来的流程
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>程序按顺序执行，像这种同步调用，funcA和funcB运行在同一线程中，这是最为常见的情况。<br>
+但假如用户函数进行磁盘读取操作，会使用系统调用read，这时用户函数和被调函数运行在不同的线程中。<br>
+所以说，<strong>同步调用和函数与被调函数是否运行在同一个线程是没有关系的。</strong></p>
+<h3 id="异步"><a href="#%e5%bc%82%e6%ad%a5" class="header-anchor"></a>异步
+</h3><p>控制台输出字符就是这种例子</p>
+<h2 id="console-input"><a href="#console-input" class="header-anchor"></a>Console input
+</h2><p>控制台Console是与用户进行交互的硬件设备。键盘通过连接到RISC-V的UART串行端口传输（UART Serial-port），控制台驱动程序会接收到这些输入。控制台驱动程序处理一些特殊字符，直到完整的一行。用户程序（e.g. shell）可以使用read系统调用读取它们。<br>
+从UART0(0x10000000)以下的地址都是device，这里有一些偏移和状态的定义</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#define Reg(reg) ((volatile unsigned char *)(UART0 + reg))
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define RHR 0                 </span><span style="color:#75715e">// receive holding register (for input bytes)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define THR 0                 </span><span style="color:#75715e">// transmit holding register (for output bytes)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define IER 1                 </span><span style="color:#75715e">// interrupt enable register
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define IER_TX_ENABLE (1&lt;&lt;0)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define IER_RX_ENABLE (1&lt;&lt;1)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define FCR 2                 </span><span style="color:#75715e">// FIFO control register
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define FCR_FIFO_ENABLE (1&lt;&lt;0)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define FCR_FIFO_CLEAR (3&lt;&lt;1) </span><span style="color:#75715e">// clear the content of the two FIFOs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define ISR 2                 </span><span style="color:#75715e">// interrupt status register
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define LCR 3                 </span><span style="color:#75715e">// line control register
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define LCR_EIGHT_BITS (3&lt;&lt;0)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define LCR_BAUD_LATCH (1&lt;&lt;7) </span><span style="color:#75715e">// special mode to set baud rate
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//咦？为啥不用4呢
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define LSR 5                 </span><span style="color:#75715e">// line status register
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define LSR_RX_READY (1&lt;&lt;0)   </span><span style="color:#75715e">// input is waiting to be read from RHR
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define LSR_TX_IDLE (1&lt;&lt;5)    </span><span style="color:#75715e">// THR can accept another character to send
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define ReadReg(reg) (*(Reg(reg)))
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define WriteReg(reg, v) (*(Reg(reg)) = (v))
+</span></span></span></code></pre></div><h3 id="用户键盘输入到shell读出的整个过程"><a href="#%e7%94%a8%e6%88%b7%e9%94%ae%e7%9b%98%e8%be%93%e5%85%a5%e5%88%b0shell%e8%af%bb%e5%87%ba%e7%9a%84%e6%95%b4%e4%b8%aa%e8%bf%87%e7%a8%8b" class="header-anchor"></a>用户键盘输入到shell读出的整个过程
+</h3><p>用户键盘输入一个字符 <strong>-&gt;</strong> UART在RHR中接收到该字符，发出中断 <strong>-&gt;</strong> xv6接收到中断，陷入trap <strong>-&gt;</strong> trap handler发现是外部设备中断，设备是UART <strong>-&gt;</strong> 调用uartintr <strong>-&gt;</strong> 发现RHR中有字符可读，调用consoleintr <strong>-&gt;</strong> 将输入字符缓冲到cons.buf中，如果读到&rsquo;\n&rsquo;或&rsquo;ctrl+D&rsquo;，说明用户输入满足一行，就唤醒consoleread <strong>-&gt;</strong> 读出一整行的用户输入，拷贝到用户空间中</p>
+<h3 id="1初始化uart"><a href="#1%e5%88%9d%e5%a7%8b%e5%8c%96uart" class="header-anchor"></a>1、初始化UART
+</h3><p>xv6在kernel/main.c的main函数中调用consoleinit
+consoleinit调用uartinit</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uartinit</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// disable interrupts.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(IER, <span style="color:#ae81ff">0x00</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// special mode to set baud rate.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(LCR, LCR_BAUD_LATCH);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// LSB for baud rate of 38.4K.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0x03</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// MSB for baud rate of 38.4K.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">0x00</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// leave set-baud mode,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// and set word length to 8 bits, no parity.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(LCR, LCR_EIGHT_BITS);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// reset and enable FIFOs.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(FCR, FCR_FIFO_ENABLE <span style="color:#f92672">|</span> FCR_FIFO_CLEAR);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// enable transmit and receive interrupts.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">WriteReg</span>(IER, IER_TX_ENABLE <span style="color:#f92672">|</span> IER_RX_ENABLE);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">initlock</span>(<span style="color:#f92672">&amp;</span>uart_tx_lock, <span style="color:#e6db74">&#34;uart&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>uartinit的主要工作是写入相关的控制寄存器，配置好传输的波特率，重置FIFO缓冲区，最后开启接收中断和发送完成中断。</p>
+<h3 id="2输入字符产生中断"><a href="#2%e8%be%93%e5%85%a5%e5%ad%97%e7%ac%a6%e4%ba%a7%e7%94%9f%e4%b8%ad%e6%96%ad" class="header-anchor"></a>2、输入字符产生中断
+</h3><p>当用户键下键盘输入一个字符，且UART的RHR接收到时，UART就会向CPU发出中断（receive interrupt），然后执行trap handler。发现是设备中断后，trap handler会跳转到devintr。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// check if it&#39;s an external interrupt or software interrupt,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// and handle it.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// returns 2 if timer interrupt,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 1 if other device,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 0 if not recognized.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">devintr</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  uint64 scause <span style="color:#f92672">=</span> <span style="color:#a6e22e">r_scause</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>((scause <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x8000000000000000L</span>) <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>     (scause <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">9</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// this is a supervisor external interrupt, via PLIC.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// irq indicates which device interrupted.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> irq <span style="color:#f92672">=</span> <span style="color:#a6e22e">plic_claim</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(irq <span style="color:#f92672">==</span> UART0_IRQ){
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">uartintr</span>();
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(irq <span style="color:#f92672">==</span> VIRTIO0_IRQ){
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">virtio_disk_intr</span>();
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(irq){
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;unexpected interrupt irq=%d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, irq);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// the PLIC allows each device to raise at most one
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// interrupt at a time; tell the PLIC the device is
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// now allowed to interrupt again.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(irq)
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">plic_complete</span>(irq);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span>(scause <span style="color:#f92672">==</span> <span style="color:#ae81ff">0x8000000000000001L</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// software interrupt from a machine-mode timer interrupt,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// forwarded by timervec in kernelvec.S.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">cpuid</span>() <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">clockintr</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// acknowledge the software interrupt by clearing
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// the SSIP bit in sip.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">w_sip</span>(<span style="color:#a6e22e">r_sip</span>() <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span><span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>devintr通过scause寄存器判断发生中断的设备，由PLIC告诉CPU，发现是UART之后，devintr就会调转到uartintr。（这个就是一个interrupt handler）</p>
+<h3 id="3uartintr"><a href="#3uartintr" class="header-anchor"></a>3、uartintr
+</h3><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// handle a uart interrupt, raised because input has
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// arrived, or the uart is ready for more output, or
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// both. called from trap.c.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uartintr</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// read and process incoming characters.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">while</span>(<span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#a6e22e">uartgetc</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(c <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">consoleintr</span>(c);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// send buffered characters.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">acquire</span>(<span style="color:#f92672">&amp;</span>uart_tx_lock);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">uartstart</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>uart_tx_lock);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// read one input character from the UART.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// return -1 if none is waiting.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uartgetc</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">ReadReg</span>(LSR) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x01</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// input data is ready.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ReadReg</span>(RHR);
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>它首先尝试从其控制寄存器RHR中读出一个字符（我们说过RHR保持着UART接收的输入），如果有就执行控制台驱动程序bottom half，即consoleintr来处理。</p>
+<h3 id="4控制台接收字符"><a href="#4%e6%8e%a7%e5%88%b6%e5%8f%b0%e6%8e%a5%e6%94%b6%e5%ad%97%e7%ac%a6" class="header-anchor"></a>4、控制台接收字符
+</h3><p>有输入字符到达控制台时会产生中断，因此跳转到控制台的中断处理程序consoleintr。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> spinlock lock;
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// input
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define INPUT_BUF 128
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">char</span> buf[INPUT_BUF];
+</span></span><span style="display:flex;"><span>  uint r;  <span style="color:#75715e">// Read index
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  uint w;  <span style="color:#75715e">// Write index
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  uint e;  <span style="color:#75715e">// Edit index
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>} cons;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// the console input interrupt handler.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// uartintr() calls this for input character.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// do erase/kill processing, append to cons.buf,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// wake up consoleread() if a whole line has arrived.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">consoleintr</span>(<span style="color:#66d9ef">int</span> c)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">acquire</span>(<span style="color:#f92672">&amp;</span>cons.lock);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">switch</span>(c){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">C</span>(<span style="color:#e6db74">&#39;P&#39;</span>)<span style="color:#f92672">:</span>  <span style="color:#75715e">// Print process list.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">procdump</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">C</span>(<span style="color:#e6db74">&#39;U&#39;</span>)<span style="color:#f92672">:</span>  <span style="color:#75715e">// Kill line.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">while</span>(cons.e <span style="color:#f92672">!=</span> cons.w <span style="color:#f92672">&amp;&amp;</span>
+</span></span><span style="display:flex;"><span>          cons.buf[(cons.e<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> INPUT_BUF] <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;\n&#39;</span>){
+</span></span><span style="display:flex;"><span>      cons.e<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">consputc</span>(BACKSPACE);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">C</span>(<span style="color:#e6db74">&#39;H&#39;</span>)<span style="color:#f92672">:</span> <span style="color:#75715e">// Backspace
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">case</span> <span style="color:#e6db74">&#39;\x7f&#39;</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(cons.e <span style="color:#f92672">!=</span> cons.w){
+</span></span><span style="display:flex;"><span>      cons.e<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">consputc</span>(BACKSPACE);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(c <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">&amp;&amp;</span> cons.e<span style="color:#f92672">-</span>cons.r <span style="color:#f92672">&lt;</span> INPUT_BUF){
+</span></span><span style="display:flex;"><span>      c <span style="color:#f92672">=</span> (c <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\r&#39;</span>) <span style="color:#f92672">?</span> <span style="color:#e6db74">&#39;\n&#39;</span> <span style="color:#f92672">:</span> c;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// echo back to the user.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#a6e22e">consputc</span>(c);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// store for consumption by consoleread().
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      cons.buf[cons.e<span style="color:#f92672">++</span> <span style="color:#f92672">%</span> INPUT_BUF] <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span>(c <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span> <span style="color:#f92672">||</span> c <span style="color:#f92672">==</span> <span style="color:#a6e22e">C</span>(<span style="color:#e6db74">&#39;D&#39;</span>) <span style="color:#f92672">||</span> cons.e <span style="color:#f92672">==</span> cons.r<span style="color:#f92672">+</span>INPUT_BUF){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// wake up consoleread() if a whole line (or end-of-file)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// has arrived.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        cons.w <span style="color:#f92672">=</span> cons.e;
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">wakeup</span>(<span style="color:#f92672">&amp;</span>cons.r);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>cons.lock);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>它会将字符缓冲到cons.buf，直到cons.buf积累了一整行的输入，consoleintr才会唤醒一个用户进程的consoleread。</p>
+<h3 id="5用户进程的consoleread"><a href="#5%e7%94%a8%e6%88%b7%e8%bf%9b%e7%a8%8b%e7%9a%84consoleread" class="header-anchor"></a>5、用户进程的consoleread
+</h3><p>用户程序（比如shell）发出read系统调用请求后，最终将导向控制台驱动程序的top half，并执行consoleread(kernel/console.c)。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// user read()s from the console go here.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// copy (up to) a whole input line to dst.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// user_dist indicates whether dst is a user
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// or kernel address.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">consoleread</span>(<span style="color:#66d9ef">int</span> user_dst, uint64 dst, <span style="color:#66d9ef">int</span> n)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  uint target;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> c;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> cbuf;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  target <span style="color:#f92672">=</span> n;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">acquire</span>(<span style="color:#f92672">&amp;</span>cons.lock);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span>(n <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// wait until interrupt handler has put some
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// input into cons.buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">while</span>(cons.r <span style="color:#f92672">==</span> cons.w){
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">myproc</span>()<span style="color:#f92672">-&gt;</span>killed){
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>cons.lock);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">sleep</span>(<span style="color:#f92672">&amp;</span>cons.r, <span style="color:#f92672">&amp;</span>cons.lock);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    c <span style="color:#f92672">=</span> cons.buf[cons.r<span style="color:#f92672">++</span> <span style="color:#f92672">%</span> INPUT_BUF];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(c <span style="color:#f92672">==</span> <span style="color:#a6e22e">C</span>(<span style="color:#e6db74">&#39;D&#39;</span>)){  <span style="color:#75715e">// end-of-file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">if</span>(n <span style="color:#f92672">&lt;</span> target){
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Save ^D for next time, to make sure
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#75715e">// caller gets a 0-byte result.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        cons.r<span style="color:#f92672">--</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// copy the input byte to the user-space buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    cbuf <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(<span style="color:#a6e22e">either_copyout</span>(user_dst, dst, <span style="color:#f92672">&amp;</span>cbuf, <span style="color:#ae81ff">1</span>) <span style="color:#f92672">==</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    dst<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span>n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(c <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;\n&#39;</span>){
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// a whole line has arrived, return to
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// the user-level read().
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>cons.lock);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> target <span style="color:#f92672">-</span> n;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>consoleread主要从缓冲区con.buf中读取整行的输入到用户空间中，如果cons.buf中没有字符可读，或者读完了缓冲区中的所有字符该行还未结束，shell会睡眠。</p>
+<h2 id="console-output"><a href="#console-output" class="header-anchor"></a>Console output
+</h2><p>用户进程请求的write系统调用，最终将导向到UART的驱动程序的top half，并执行uartputc(kernel/uart.c)，如果发送区的缓存已满，驱动程序会将这个进程挂起睡眠。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// add a character to the output buffer and tell the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// UART to start sending if it isn&#39;t already.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// blocks if the output buffer is full.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// because it may block, it can&#39;t be called
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// from interrupts; it&#39;s only suitable for use
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// by write().
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uartputc</span>(<span style="color:#66d9ef">int</span> c)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">acquire</span>(<span style="color:#f92672">&amp;</span>uart_tx_lock);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(panicked){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(;;)
+</span></span><span style="display:flex;"><span>      ;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span>(<span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(((uart_tx_w <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> UART_TX_BUF_SIZE) <span style="color:#f92672">==</span> uart_tx_r){
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// buffer is full.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// wait for uartstart() to open up space in the buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#a6e22e">sleep</span>(<span style="color:#f92672">&amp;</span>uart_tx_r, <span style="color:#f92672">&amp;</span>uart_tx_lock);
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>      uart_tx_buf[uart_tx_w] <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>      uart_tx_w <span style="color:#f92672">=</span> (uart_tx_w <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> UART_TX_BUF_SIZE;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">uartstart</span>();
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">release</span>(<span style="color:#f92672">&amp;</span>uart_tx_lock);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>然后执行uartstart，uartstart的工作是尝试发送一个字符到THR中，如果缓冲区是空的或者发送已经就绪（THR有值），会直接返回。之后UART就会发送THR中的字符，同时唤醒一个正在睡眠的uartputc字符，表明可以继续往缓冲区写入字符。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// if the UART is idle, and a character is waiting
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// in the transmit buffer, send it.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// caller must hold uart_tx_lock.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// called from both the top- and bottom-half.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uartstart</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span>(<span style="color:#ae81ff">1</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(uart_tx_w <span style="color:#f92672">==</span> uart_tx_r){
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// transmit buffer is empty.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>((<span style="color:#a6e22e">ReadReg</span>(LSR) <span style="color:#f92672">&amp;</span> LSR_TX_IDLE) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>){
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// the UART transmit holding register is full,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// so we cannot give it another byte.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#75715e">// it will interrupt when it&#39;s ready for a new byte.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> uart_tx_buf[uart_tx_r];
+</span></span><span style="display:flex;"><span>    uart_tx_r <span style="color:#f92672">=</span> (uart_tx_r <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">%</span> UART_TX_BUF_SIZE;
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// maybe uartputc() is waiting for space in the buffer.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">wakeup</span>(<span style="color:#f92672">&amp;</span>uart_tx_r);
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">WriteReg</span>(THR, c);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>所以，第一个字符是uartputc调用uartstart发送的，每当UART发送完一个字符，就会产生transmit complete interrupt，然后跟之前一样的一系列操作，跳转到uartintr，uartintr调用uartstart，以此类推，所以后续字符都是transmit complete interrup发送的，直到缓冲区满。<br>
+uartstart和uartputs都会很快返回，不会等待什么，所以UART暴露给用户程序或内核的uartputc接口是<strong>异步</strong>的。<br>
+uartputc也提供了<strong>同步</strong>的版本，或者说<strong>阻塞</strong>的版本&ndash;uartputc_sync。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// alternate version of uartputc() that doesn&#39;t 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// use interrupts, for use by kernel printf() and
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// to echo characters. it spins waiting for the uart&#39;s
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// output register to be empty.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">uartputc_sync</span>(<span style="color:#66d9ef">int</span> c)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">push_off</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span>(panicked){
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span>(;;)
+</span></span><span style="display:flex;"><span>      ;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// wait for Transmit Holding Empty to be set in LSR.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">while</span>((<span style="color:#a6e22e">ReadReg</span>(LSR) <span style="color:#f92672">&amp;</span> LSR_TX_IDLE) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    ;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">WriteReg</span>(THR, c);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pop_off</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="concurrency-in-drivers"><a href="#concurrency-in-drivers" class="header-anchor"></a>Concurrency in drivers
+</h2><h3 id="three-concurrency-dangers"><a href="#three-concurrency-dangers" class="header-anchor"></a>three concurrency dangers
+</h3><ol>
+<li>两个在不同CPU的线程可能同时会调用consoleread</li>
+<li>正在执行consoleread的时候，硬件可能会要求这个CPU响应console(really UART) interrupt</li>
+<li>正在执行consoleread的时候，硬件可能要求另一个CPU响应console interrupt<br>
+还有一种需要注意的情况是，一个进程可能正在等待设备工作的完成，但是当该设备的工作完成并产生中断时，正在运行的是另一个进程。因为这种原因，中断处理程序不应该认为当前运行的进程就是它所要交付工作的进程。例如，中断处理程序简单地使用当前进程的页表来调用copyout是不安全的。因此，更好的方式是，中断处理程序只做很小一部分工作，例如将数据拷贝到缓冲区中，然后在top half中，唤醒特定的进程来完成剩下的工作。</li>
+</ol>
+<h2 id="timer-interrupts"><a href="#timer-interrupts" class="header-anchor"></a>Timer interrupts
+</h2><p>计时器中断产生时，首先在机器模式下产生一个软件中断，提醒内核及时处理计时器这一软件中断。在后续内核执行user trap或kernel trap的过程中，如果中断开放，就能注意到这一软件中断，从而执行计时器到时的响应逻辑事件（如调度）。<br>
+计时器中断是在<strong>机器模式</strong>下处理的，内核不能运行在机器模式下，所以xv6对计时器中断的方式，和用户空间下的trap、内核空间下的trap不同。<br>
+在xv6启动的时候，机器模式下进行了计时器的初始化。<br>
+主要的工作有，对CLINT（core-local interruptor）进行编程，使其在一定时延后产生中断；然后设置一个类似trapframe的容器scratch，用于在机器模式下保存寄存器和CLINT的地址；最后，设置mtvec，使得机器模式的trap跳转到timervec，并且开放计时器中断。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// set up to receive timer interrupts in machine mode,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// which arrive at timervec in kernelvec.S,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// which turns them into software interrupts for
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// devintr() in trap.c.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">timerinit</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// each CPU has a separate source of timer interrupts.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> id <span style="color:#f92672">=</span> <span style="color:#a6e22e">r_mhartid</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ask the CLINT for a timer interrupt.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">int</span> interval <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000000</span>; <span style="color:#75715e">// cycles; about 1/10th second in qemu.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">*</span>(uint64<span style="color:#f92672">*</span>)<span style="color:#a6e22e">CLINT_MTIMECMP</span>(id) <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(uint64<span style="color:#f92672">*</span>)CLINT_MTIME <span style="color:#f92672">+</span> interval;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// prepare information in scratch[] for timervec.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// scratch[0..3] : space for timervec to save registers.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// scratch[4] : address of CLINT MTIMECMP register.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#75715e">// scratch[5] : desired interval (in cycles) between timer interrupts.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  uint64 <span style="color:#f92672">*</span>scratch <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>mscratch0[<span style="color:#ae81ff">32</span> <span style="color:#f92672">*</span> id];
+</span></span><span style="display:flex;"><span>  scratch[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">CLINT_MTIMECMP</span>(id);
+</span></span><span style="display:flex;"><span>  scratch[<span style="color:#ae81ff">5</span>] <span style="color:#f92672">=</span> interval;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">w_mscratch</span>((uint64)scratch);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// set the machine-mode trap handler.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">w_mtvec</span>((uint64)timervec);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// enable machine-mode interrupts.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">w_mstatus</span>(<span style="color:#a6e22e">r_mstatus</span>() <span style="color:#f92672">|</span> MSTATUS_MIE);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// enable machine-mode timer interrupts.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">w_mie</span>(<span style="color:#a6e22e">r_mie</span>() <span style="color:#f92672">|</span> MIE_MTIE);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>计时器中断可以在<strong>任何时刻</strong>发生，不管是在执行用户或内核代码。即使内核正在<strong>临界区</strong>中执行，也不<strong>应该关闭计时器中断</strong>。<br>
+计时器的trap handler应该在一个不会干扰被中断的内核代码的地方运行，因此计时器trap handler要从机器模式下开始。计时器到时，xv6会陷入机器模式，陷入我们预先在寄存器mtvec中设置好的中断向量timervec中，timervec主要重置计时器，并且发出软中断software interrupt，然后立刻返回。通过发出软中断，CPU将处理计时器中断的任务交付给了内核，现在内核可以按照与普通中断相同的trap机制来处理该中断，显然内核也可以屏蔽该软件中断（例如当执行类似acquire的原子操作时，要关闭中断）。<br>
+定时器中断逻辑有两部分。一部分是timervec的代码，这部分是在机器模式下运行的。另一部分是发出软件中断后，内核对定时器到时这个事件做出具体相应的中断，这部分在devintr中，可以被内核屏蔽掉，关闭中断就不会相应这个软中断。处理该软件中断的流程在devintr中。</p>
+<h2 id="real-world"><a href="#real-world" class="header-anchor"></a>Real World
+</h2><p>xv6的设备中断和计时器中断，可以发生在内核空间或用户空间下。即使是在内核空间下，计时器中断也会造成线程的切换（通过yield）。现在的操作系统中设备驱动程序的代码量，要远大于内核的代码量。<br>
+UART驱动程序每次从控制寄存器RHR中读出一个字节大小的字符，这种模式称为编程I/O（Programmed I/O），因为我们通过软件来驱动数据传输。编程I/O的方式比较简单，但是很难用于高速率传输的场合。一种更为人熟知的方式是直接存储器访问DMA（Direct Memory Access），DMA硬件会直接从RAM中读出数据，或将数据直接写入RAM中。现代磁盘和网络设备基本都使用DMA，因为它们对传输速率的要求比较高。DMA中的驱动程序，会在RAM中准备好相应的数据后，通过写入控制寄存器来通知相应设备处理这些数据。<br>
+设备在无法预知的时间点完成工作，并不时地让CPU的注意到它，我们使用了中断这种机制。但中断有较高的CPU开销，因此高速设备如网络、磁盘控制器等要设法减少中断的次数。一种方式是，对于一大串的输入输出请求，我们执行一次中断；另一种方式是，禁用中断，而让设备驱动程序周期性地检查设备工作是否完成，这种技术称为轮询Polling。如果设备的工作很快，轮询是高效的，但如果设备经常处于闲置状态，轮询又会浪费CPU资源。一些驱动程序采用中断和轮询相交替的方式，取决于当前设备的工作负载。<br>
+UART驱动程序将数据先拷贝到内核的缓冲区中，再拷贝到用户空间下。如果数据传输速率低，这么做是可以的，但是两次的复制显然不太高效。因此，一些操作系统可以直接在用户缓冲区和设备之间拷贝数据，这通常结合DMA来实现。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            1234 - 
+        
+        2024 Lanmt O.o
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
