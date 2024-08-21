@@ -192,3 +192,49 @@ void lock(lock_t *lock){
     ;
 }
 ```
+### Fetch and Add
+逻辑如下
+```c
+int FetchAndAdd(int *ptr){
+  int old = *ptr;
+  *ptr = old + 1;
+  return old;
+}
+```
+我们可以用这个实现一个ticket锁，每个进程等待的时候有着自己的ticket，等turn轮到自己的时候就会进入临界区。
+```c
+typedef struct lock_t{
+  int ticket;
+  int turn;
+} lock_t;
+
+void lock_init(lock_t *lock){
+  lock->ticket = 0;
+  lock->turn = 0;
+}
+
+void lock(lock_t *lock){
+  int myturn = FetchAndAdd(&lock->ticket);
+  while(lock->turn != myturn)
+    ; // 自旋等待
+}
+
+void unlock(lock_t *lock){
+  FetchAndAdd(&lock->turn);
+}
+
+void main()
+{
+  lock_init(&lock_t);
+
+  do{
+    lock(&lock_t);
+
+    // 临界区
+
+    unlock(&lock_t);
+  }while(true);
+
+  return;
+}
+```
