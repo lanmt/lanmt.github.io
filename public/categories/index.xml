@@ -6,13 +6,61 @@
         <description>Recent content in Categories on Lanmt O.o</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Tue, 20 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Wed, 28 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>数据库</title>
+        <link>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+        <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/44.jpg" alt="Featured image of post 数据库" /&gt;</description>
+        </item>
+        <item>
+        <title>线性代数</title>
+        <link>http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</link>
+        <pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/44.png" alt="Featured image of post 线性代数" /&gt;</description>
+        </item>
+        <item>
+        <title>保研</title>
+        <link>http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/</link>
+        <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/44.jpg" alt="Featured image of post 保研" /&gt;</description>
+        </item>
+        <item>
+        <title>操作系统</title>
+        <link>http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</link>
+        <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>6.s081</title>
         <link>http://localhost:1313/categories/6.s081/</link>
-        <pubDate>Tue, 20 Aug 2024 00:00:00 +0000</pubDate>
+        <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/categories/6.s081/</guid>
         <description>&lt;img src="http://localhost:1313/categories/6.s081/44.jpg" alt="Featured image of post 6.s081" /&gt;</description>
+        </item>
+        <item>
+        <title>Operating Systeam</title>
+        <link>http://localhost:1313/categories/operating-systeam/</link>
+        <pubDate>Wed, 21 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/operating-systeam/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>freewriting</title>
+        <link>http://localhost:1313/categories/freewriting/</link>
+        <pubDate>Tue, 20 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/freewriting/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/freewriting/44.jpg" alt="Featured image of post freewriting" /&gt;</description>
         </item>
         <item>
         <title>algorithm</title>
@@ -23,36 +71,36 @@
         <description>&lt;img src="http://localhost:1313/categories/algorithm/44.jpg" alt="Featured image of post algorithm" /&gt;</description>
         </item>
         <item>
-        <title>保研</title>
-        <link>http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/</link>
-        <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/%E4%BF%9D%E7%A0%94/44.jpg" alt="Featured image of post 保研" /&gt;</description>
-        </item>
-        <item>
-        <title>freewriting</title>
-        <link>http://localhost:1313/categories/freewriting/</link>
-        <pubDate>Tue, 13 Aug 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/categories/freewriting/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/freewriting/44.jpg" alt="Featured image of post freewriting" /&gt;</description>
-        </item>
-        <item>
-        <title>线性代数</title>
-        <link>http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</link>
-        <pubDate>Wed, 19 Jun 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/</guid>
-        <description>&lt;img src="http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/44.png" alt="Featured image of post 线性代数" /&gt;</description>
-        </item>
-        <item>
         <title>15-213</title>
         <link>http://localhost:1313/categories/15-213/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/categories/15-213/</guid>
         <description>&lt;img src="http://localhost:1313/categories/15-213/44.png" alt="Featured image of post 15-213" /&gt;</description>
+        </item>
+        <item>
+        <title>operating syestem</title>
+        <link>http://localhost:1313/categories/operating-system/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/operating-system/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/operating-system/44.jpg" alt="Featured image of post operating syestem" /&gt;</description>
+        </item>
+        <item>
+        <title>数据结构</title>
+        <link>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/44.jpg" alt="Featured image of post 数据结构" /&gt;</description>
+        </item>
+        <item>
+        <title>英语</title>
+        <link>http://localhost:1313/categories/%E8%8B%B1%E8%AF%AD/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/%E8%8B%B1%E8%AF%AD/</guid>
+        <description>&lt;img src="http://localhost:1313/categories/%E8%8B%B1%E8%AF%AD/44.png" alt="Featured image of post 英语" /&gt;</description>
         </item>
         <item>
         <title>软件架构</title>

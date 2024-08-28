@@ -243,3 +243,28 @@ ty = y0 * c / gcd;
 //x = tx + dx * k
 //y = ty - dy * k
 ```
+## 并查集
+```cpp
+#define maxm 100010
+int fa[maxm];
+int find(int i) {
+	if (i == fa[i])return i;
+	else {
+		fa[i] = find(fa[i]);
+		return fa[i];
+	}
+}
+```
+## 其他
+```cpp
+//背单词了
+//全排列
+vector<char> a = { 'a','b','c' };
+do {
+    for (auto c : a)cout << c << ' ';
+    cout << endl;
+} while (next_permutation(a.begin(), a.end()));
+
+//保留小数
+cout<<fixed<<setprecision(10)<<a;
+```

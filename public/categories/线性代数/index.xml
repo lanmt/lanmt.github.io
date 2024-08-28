@@ -6,7 +6,117 @@
         <description>Recent content in 线性代数 on Lanmt O.o</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 19 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 27 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>矩阵的逆</title>
+        <link>http://localhost:1313/post/%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/</link>
+        <pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E7%9F%A9%E9%98%B5%E7%9A%84%E9%80%86/</guid>
+        <description>&lt;h2 id=&#34;待定系数法&#34;&gt;&lt;a href=&#34;#%e5%be%85%e5%ae%9a%e7%b3%bb%e6%95%b0%e6%b3%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;待定系数法
+&lt;/h2&gt;&lt;p&gt;例如$A=
+\left(
+\begin{matrix}
+1 &amp;amp; 1\
+2 &amp;amp; 3
+\end{matrix}
+\right)
+$，设$A^T=
+\left(
+\begin{matrix}
+a &amp;amp; b\
+c &amp;amp; d
+\end{matrix}
+\right)
+$，则$$A·A^T=
+\left(
+\begin{matrix}
+a+2c &amp;amp; b+2d\
+a+3c &amp;amp; b+3d
+\end{matrix}
+\right) =
+\left(
+\begin{matrix}
+1 &amp;amp; 0\
+0 &amp;amp; 1
+\end{matrix}
+\right)$$&lt;/p&gt;
+&lt;h2 id=&#34;初等行变换初等列变换&#34;&gt;&lt;a href=&#34;#%e5%88%9d%e7%ad%89%e8%a1%8c%e5%8f%98%e6%8d%a2%e5%88%9d%e7%ad%89%e5%88%97%e5%8f%98%e6%8d%a2&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;初等行变换/初等列变换
+&lt;/h2&gt;&lt;p&gt;行变换和列变换不能同时使用&lt;/p&gt;
+&lt;h2 id=&#34;伴随矩阵&#34;&gt;&lt;a href=&#34;#%e4%bc%b4%e9%9a%8f%e7%9f%a9%e9%98%b5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;伴随矩阵
+&lt;/h2&gt;&lt;p&gt;$A^{-1} = \frac{A^*}{|A|}$
+伴随矩阵就是矩阵各个元素代数余子式组成的矩阵&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>线性方程组</title>
+        <link>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/</link>
+        <pubDate>Tue, 27 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/</guid>
+        <description>&lt;h2 id=&#34;齐次线性方程组&#34;&gt;&lt;a href=&#34;#%e9%bd%90%e6%ac%a1%e7%ba%bf%e6%80%a7%e6%96%b9%e7%a8%8b%e7%bb%84&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;齐次线性方程组
+&lt;/h2&gt;&lt;p&gt;不会出现增广矩阵秩大于原矩阵的情况，所以只有两种情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;唯一零解&lt;/li&gt;
+&lt;li&gt;无穷多解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;矩阵满秩有唯一零解，下面讨论无穷多解的基础解系和通解&lt;/p&gt;
+&lt;h3 id=&#34;基础解系&#34;&gt;&lt;a href=&#34;#%e5%9f%ba%e7%a1%80%e8%a7%a3%e7%b3%bb&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;基础解系
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;先将矩阵化为行最简矩阵
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image.png&#34;
+	width=&#34;1639&#34;
+	height=&#34;512&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image_hu8c4e06f23ec860c4b89d222dfef296d5_110708_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image_hu8c4e06f23ec860c4b89d222dfef296d5_110708_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;320&#34;
+		data-flex-basis=&#34;768px&#34;
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;列出化简后的方程组
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image-1.png&#34;
+	width=&#34;1818&#34;
+	height=&#34;592&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image-1_hu95d91018ad081d76e2afcac38cc0e0e5_255681_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image-1_hu95d91018ad081d76e2afcac38cc0e0e5_255681_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;307&#34;
+		data-flex-basis=&#34;737px&#34;
+	
+&gt;
+如图，能自由取值的未知量有两个，例如$x_3$，我们可以将其他可自由取值的未知量设为0，不可自由取值的未知量用$x_3$表示便可得出基础解系的一个向量。&lt;strong&gt;所以，$$基础解系中向量的个数=零空间的维数=n-r$$&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;转换为列向量，即为基础解系
+&lt;img src=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image-2.png&#34;
+	width=&#34;1718&#34;
+	height=&#34;495&#34;
+	srcset=&#34;http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image-2_hu8d0783e9f741345fe4fb99be6771ede6_175385_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84/image-2_hu8d0783e9f741345fe4fb99be6771ede6_175385_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;347&#34;
+		data-flex-basis=&#34;832px&#34;
+	
+&gt;
+设$\vec{α_1}=(-\frac{1}{2},\frac{1}{2},1,0)^T$
+设$\vec{α_2}=(-\frac{1}{2},\frac{1}{2},0,1)^T$
+该齐次线性方程组的通解可表示为$\vec{x}=k_1*\vec{α_1}+k_2*\vec{α_2}$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;非齐次线性方程组axb增广矩阵-overlineaab&#34;&gt;&lt;a href=&#34;#%e9%9d%9e%e9%bd%90%e6%ac%a1%e7%ba%bf%e6%80%a7%e6%96%b9%e7%a8%8b%e7%bb%84axb%e5%a2%9e%e5%b9%bf%e7%9f%a9%e9%98%b5-overlineaab&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;非齐次线性方程组：$Ax=b$增广矩阵： $\overline{A}=[A|b]$
+&lt;/h3&gt;&lt;p&gt;解的情况会有三种&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;无解 $r(\overline{A})=r(A)+1$&lt;/li&gt;
+&lt;li&gt;唯一解 $r(A)=r(\overline{A})=n$&lt;/li&gt;
+&lt;li&gt;无穷多解 $r(\overline{A})=r(A)=r&amp;lt;n$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;齐次线性方程组的通解为非齐通解+一个特解，可以用高斯消元计算，如果是唯一解还可以克莱姆法则计算&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>线性代数的本质</title>
         <link>http://localhost:1313/post/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E7%9A%84%E6%9C%AC%E8%B4%A8/</link>
         <pubDate>Wed, 19 Jun 2024 00:00:00 +0000</pubDate>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>数据库 on Lanmt O.o</title>
+        <link>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+        <description>Recent content in 数据库 on Lanmt O.o</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 28 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>一些数据库的八股</title>
+        <link>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%85%AB%E8%82%A1/</link>
+        <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%85%AB%E8%82%A1/</guid>
+        <description>&lt;h1 id=&#34;概述&#34;&gt;&lt;a href=&#34;#%e6%a6%82%e8%bf%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;概述
+&lt;/h1&gt;&lt;h2 id=&#34;关系型数据库和非关系型数据库&#34;&gt;&lt;a href=&#34;#%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93%e5%92%8c%e9%9d%9e%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;关系型数据库和非关系型数据库
+&lt;/h2&gt;&lt;h3 id=&#34;关系型数据库&#34;&gt;&lt;a href=&#34;#%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;关系型数据库
+&lt;/h3&gt;&lt;p&gt;关系型数据库最典型的数据结构是表，由二维表和其之间的联系组成的数据组织&lt;br&gt;
+常见的关系型数据库有SQLServer、Mysql等
+优点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;易于维护&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;使用方便&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;复杂查询&lt;/strong&gt;：可以使用SQL查询&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;读写性能差&lt;/strong&gt;，尤其是海量数据&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;固定的表结构&lt;/strong&gt;，缺乏灵活性&lt;/li&gt;
+&lt;li&gt;硬件I/O是一个很大的瓶颈&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;非关系型数据库&#34;&gt;&lt;a href=&#34;#%e9%9d%9e%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;非关系型数据库
+&lt;/h3&gt;&lt;p&gt;非关系型数据库严格上不是一种数据库，应该是一种数据结构化存储方法的集合，可以是文档或key-value等&lt;br&gt;
+常见的非关系型数据库有redis等
+优点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;格式灵活&lt;/strong&gt;，存储类型可以是key-value、文档、图片等&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;速度快&lt;/strong&gt;，可以使用硬盘或随机存储器作为载体&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;成本低&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;缺点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;不支持SQL&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;无事务处理&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查询复杂&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;范式&#34;&gt;&lt;a href=&#34;#%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;范式
+&lt;/h2&gt;&lt;h3 id=&#34;第一范式&#34;&gt;&lt;a href=&#34;#%e7%ac%ac%e4%b8%80%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;第一范式
+&lt;/h3&gt;&lt;p&gt;确保每列的原子性，每列都是不可再分的最小数据单元&lt;/p&gt;
+&lt;h3 id=&#34;第二范式&#34;&gt;&lt;a href=&#34;#%e7%ac%ac%e4%ba%8c%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;第二范式
+&lt;/h3&gt;&lt;p&gt;在第一范式的基础上，要求表中每列都与主键相关。&lt;/p&gt;
+&lt;h3 id=&#34;第三范式&#34;&gt;&lt;a href=&#34;#%e7%ac%ac%e4%b8%89%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;第三范式
+&lt;/h3&gt;&lt;p&gt;在第二范式的基础上，要求每列都与主键直接相关，且列与列不存在依赖关系。&lt;/p&gt;
+&lt;h3 id=&#34;第四范式&#34;&gt;&lt;a href=&#34;#%e7%ac%ac%e5%9b%9b%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;第四范式
+&lt;/h3&gt;&lt;p&gt;在第三范式的基础上，消除多值依赖。即如果一个表中的某些列可以取多个值（多个电话号码），那么这些多值依赖的列应该剥离出来，创建新的表处理。&lt;/p&gt;
+&lt;h3 id=&#34;第五范式&#34;&gt;&lt;a href=&#34;#%e7%ac%ac%e4%ba%94%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;第五范式
+&lt;/h3&gt;&lt;p&gt;在第四范式的基础上，消除奇异化（超规范化）。奇异化是指在消除多值依赖时剥离出来的列存在相互关系，则需要再次拆分为独立的表进行处理。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
