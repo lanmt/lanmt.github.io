@@ -6,6 +6,6 @@ toc:
 comment: 
 math:
 categories:
-    - 操作系统
+    - operating system
 ---
 

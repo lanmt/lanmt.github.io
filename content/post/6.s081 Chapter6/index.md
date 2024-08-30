@@ -7,7 +7,7 @@ comment:
 math:
 categories:
     - 6.s081
-    - operating systeam
+    - operating system
     
 ---
 

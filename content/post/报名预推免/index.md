@@ -1,5 +1,5 @@
 ---
-title: 
+title: 报名预推免
 date: 2024-08-23
 description: 让我有个学上吧，求求了
 categories:
