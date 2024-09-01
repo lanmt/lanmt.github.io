@@ -17,4 +17,5 @@ categories:
 [开放通知](https://gs.dlut.edu.cn/info/1173/14906.htm)
 ## [哈尔滨工业大学威海](https://yzb.hit.edu.cn/)
 [工作细则 9.1审核，看看还能不能上传材料](https://cst.hitwh.edu.cn/2024/0808/c371a186070/page.htm)
-##
+## [天津大学](http://202.113.8.92/gstms/examineeIndex.action)
+[推免系统开放9.17预推免](https://yzb.tju.edu.cn/xwzx/zxxx/202407/t20240706_323840.htm)
