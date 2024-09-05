@@ -18,7 +18,7 @@
 &lt;/h4&gt;&lt;p&gt;常用的同步工具有：锁Lock，条件变量Conditional Variable，信号量Semaphore等。&lt;/p&gt;
 &lt;h4 id=&#34;临界区和竞争条件&#34;&gt;&lt;a href=&#34;#%e4%b8%b4%e7%95%8c%e5%8c%ba%e5%92%8c%e7%ab%9e%e4%ba%89%e6%9d%a1%e4%bb%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;临界区和竞争条件
 &lt;/h4&gt;&lt;p&gt;访问共享资源的代码段，我们称之为&lt;strong&gt;临界区Critical Section&lt;/strong&gt;，而多个执行线程同时进入临界区并尝试更新共享数据结构的情况，我们称之为&lt;strong&gt;竞争条件Race Condition&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;下面是一个生产者消费者的模型&lt;/p&gt;
+&lt;p&gt;下面是一个生产者-消费者的模型&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Producer
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; (true) {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;/* produce an item in next produced */&lt;/span&gt;

@@ -199,8 +199,8 @@
                 6.s081
             </a>
         
-            <a href="/categories/operating-systeam/" >
-                Operating Systeam
+            <a href="/categories/operating-system/" style="background-color: #68217a; color: #fff;">
+                operating syestem
             </a>
         
     </header>
@@ -256,7 +256,7 @@
 </h4><p>常用的同步工具有：锁Lock，条件变量Conditional Variable，信号量Semaphore等。</p>
 <h4 id="临界区和竞争条件"><a href="#%e4%b8%b4%e7%95%8c%e5%8c%ba%e5%92%8c%e7%ab%9e%e4%ba%89%e6%9d%a1%e4%bb%b6" class="header-anchor"></a>临界区和竞争条件
 </h4><p>访问共享资源的代码段，我们称之为<strong>临界区Critical Section</strong>，而多个执行线程同时进入临界区并尝试更新共享数据结构的情况，我们称之为<strong>竞争条件Race Condition</strong>。</p>
-<p>下面是一个生产者消费者的模型</p>
+<p>下面是一个生产者-消费者的模型</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// Producer
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">while</span> (true) {
 </span></span><span style="display:flex;"><span>  <span style="color:#75715e">/* produce an item in next produced */</span>

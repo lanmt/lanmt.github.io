@@ -6,7 +6,337 @@
         <description>Recent content on Lanmt O.o</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Wed, 28 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 02 Sep 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>一些操作系统的八股</title>
+        <link>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%AB%E8%82%A1/</link>
+        <pubDate>Mon, 02 Sep 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%AB%E8%82%A1/</guid>
+        <description>&lt;h1 id=&#34;计算机系统基础&#34;&gt;&lt;a href=&#34;#%e8%ae%a1%e7%ae%97%e6%9c%ba%e7%b3%bb%e7%bb%9f%e5%9f%ba%e7%a1%80&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;计算机系统基础
+&lt;/h1&gt;&lt;h2 id=&#34;什么是操作系统&#34;&gt;&lt;a href=&#34;#%e4%bb%80%e4%b9%88%e6%98%af%e6%93%8d%e4%bd%9c%e7%b3%bb%e7%bb%9f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;什么是操作系统
+&lt;/h2&gt;&lt;p&gt;操作系统是管理计算机硬件和软件资源、给&lt;strong&gt;应用程序和用户提供底层抽象&lt;/strong&gt;的一种系统软件。操作系统起到了计算机系统中的核心作用，它负责协调、控制和管理计算机&lt;strong&gt;硬件设备、系统资源和应用程序&lt;/strong&gt;的执行。主要功能如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;硬件管理&lt;/li&gt;
+&lt;li&gt;文件管理&lt;/li&gt;
+&lt;li&gt;进程管理&lt;/li&gt;
+&lt;li&gt;内存管理&lt;/li&gt;
+&lt;li&gt;系统安全与保护&lt;/li&gt;
+&lt;li&gt;用户接口&lt;/li&gt;
+&lt;li&gt;系统服务和应用程序支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;冯诺依曼结构&#34;&gt;&lt;a href=&#34;#%e5%86%af%e8%af%ba%e4%be%9d%e6%9b%bc%e7%bb%93%e6%9e%84&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;冯诺依曼结构
+&lt;/h2&gt;&lt;p&gt;包括&lt;strong&gt;存储器、中央处理器（算术逻辑单元、控制单元）、输入设备、输出设备、总线。&lt;/strong&gt;/
+冯诺依曼结构的主要优点是将程序和数据存储在同一个存储器中，更加灵活。&lt;/p&gt;
+&lt;h2 id=&#34;宏内核和微内核&#34;&gt;&lt;a href=&#34;#%e5%ae%8f%e5%86%85%e6%a0%b8%e5%92%8c%e5%be%ae%e5%86%85%e6%a0%b8&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;宏内核和微内核
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;宏内核&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;宏内核架构将操作系统的所有基本功能都集成在一个单一的大内核中。&lt;br&gt;
+性能高但较复杂，安全风险大。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;微内核&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;将核心功能精简为最基本的部分，将其他的功能模块发在用户空间。模块化、灵活性、安全性高，但频繁的用户空间和内核空间切换会影响性能。&lt;/p&gt;
+&lt;h2 id=&#34;缓存&#34;&gt;&lt;a href=&#34;#%e7%bc%93%e5%ad%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;缓存
+&lt;/h2&gt;&lt;h3 id=&#34;组织方式&#34;&gt;&lt;a href=&#34;#%e7%bb%84%e7%bb%87%e6%96%b9%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;组织方式
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;直接映射缓存&lt;/li&gt;
+&lt;li&gt;全相联映射缓存&lt;/li&gt;
+&lt;li&gt;组相联映射缓存&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;替换策略&#34;&gt;&lt;a href=&#34;#%e6%9b%bf%e6%8d%a2%e7%ad%96%e7%95%a5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;替换策略
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;随机替换&lt;/li&gt;
+&lt;li&gt;最近最少使用&lt;/li&gt;
+&lt;li&gt;最不经常使用&lt;/li&gt;
+&lt;li&gt;先进先出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;程序执行的基本过程&#34;&gt;&lt;a href=&#34;#%e7%a8%8b%e5%ba%8f%e6%89%a7%e8%a1%8c%e7%9a%84%e5%9f%ba%e6%9c%ac%e8%bf%87%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;程序执行的基本过程
+&lt;/h2&gt;&lt;h3 id=&#34;编译&#34;&gt;&lt;a href=&#34;#%e7%bc%96%e8%af%91&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;编译
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对于编译型语言，源代码需通常需要经过&lt;strong&gt;预编译、编译、汇编&lt;/strong&gt;，将其编译成目标代码，通常是二进制文件。&lt;/li&gt;
+&lt;li&gt;对于解释性语言，而不需要实现编译成可执行程序，而是在运行时由解释器逐行解释并执行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;加载&#34;&gt;&lt;a href=&#34;#%e5%8a%a0%e8%bd%bd&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;加载
+&lt;/h3&gt;&lt;p&gt;当可执行程序准备好后，操作系统将其加载到内存中。这个过程涉及分配内存、加载代码和数据等。&lt;/p&gt;
+&lt;h3 id=&#34;代码执行&#34;&gt;&lt;a href=&#34;#%e4%bb%a3%e7%a0%81%e6%89%a7%e8%a1%8c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;代码执行
+&lt;/h3&gt;&lt;h3 id=&#34;系统调用与库函数&#34;&gt;&lt;a href=&#34;#%e7%b3%bb%e7%bb%9f%e8%b0%83%e7%94%a8%e4%b8%8e%e5%ba%93%e5%87%bd%e6%95%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;系统调用与库函数
+&lt;/h3&gt;&lt;p&gt;有可能需要与操作系统或其他库交互。&lt;/p&gt;
+&lt;h2 id=&#34;字符编码&#34;&gt;&lt;a href=&#34;#%e5%ad%97%e7%ac%a6%e7%bc%96%e7%a0%81&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;字符编码
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ASCII&lt;/strong&gt;：ASCII是一种基于拉丁字母表的字符编码。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Unicode&lt;/strong&gt;：Unicode是一种广泛的字符集。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;UTF-8&lt;/strong&gt;：UTF-8是Unicode字符集的一种编码方案。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;内存管理&#34;&gt;&lt;a href=&#34;#%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;内存管理
+&lt;/h1&gt;&lt;h2 id=&#34;内存虚拟化&#34;&gt;&lt;a href=&#34;#%e5%86%85%e5%ad%98%e8%99%9a%e6%8b%9f%e5%8c%96&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;内存虚拟化
+&lt;/h2&gt;&lt;p&gt;内存虚拟化是一种将物理资源抽象、管理和分配的技术。&lt;/p&gt;
+&lt;h3 id=&#34;主要目的&#34;&gt;&lt;a href=&#34;#%e4%b8%bb%e8%a6%81%e7%9b%ae%e7%9a%84&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;主要目的
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;资源隔离与共享&lt;/li&gt;
+&lt;li&gt;易用性：简化了内存管理。&lt;/li&gt;
+&lt;li&gt;容错与恢复&lt;/li&gt;
+&lt;li&gt;内存优化&lt;/li&gt;
+&lt;li&gt;进程保护：每个进程都有自己的虚拟地址空间，&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;抖动&#34;&gt;&lt;a href=&#34;#%e6%8a%96%e5%8a%a8&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;抖动
+&lt;/h2&gt;&lt;p&gt;频繁发生页面置换操作，会导致系统性能急剧下降。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;过高的内存需求&lt;/li&gt;
+&lt;li&gt;不恰当的内存分配&lt;/li&gt;
+&lt;li&gt;不合理的页置换算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;elf文件格式&#34;&gt;&lt;a href=&#34;#elf%e6%96%87%e4%bb%b6%e6%a0%bc%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;elf文件格式
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;ELF 头部&lt;/li&gt;
+&lt;li&gt;程序头表&lt;/li&gt;
+&lt;li&gt;段头表&lt;/li&gt;
+&lt;li&gt;段&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;malloc的实现&#34;&gt;&lt;a href=&#34;#malloc%e7%9a%84%e5%ae%9e%e7%8e%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;malloc的实现
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;初始化内存池&lt;/li&gt;
+&lt;li&gt;123&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;123&lt;/li&gt;
+&lt;li&gt;123&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+&lt;li&gt;123&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>一些计算机网络的八股</title>
+        <link>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/</link>
+        <pubDate>Fri, 30 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/</guid>
+        <description>&lt;h1 id=&#34;概述&#34;&gt;&lt;a href=&#34;#%e6%a6%82%e8%bf%b0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;概述
+&lt;/h1&gt;&lt;h2 id=&#34;osi七层网络模型&#34;&gt;&lt;a href=&#34;#osi%e4%b8%83%e5%b1%82%e7%bd%91%e7%bb%9c%e6%a8%a1%e5%9e%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;OSI七层网络模型
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;物理层：传输单位为&lt;strong&gt;比特流&lt;/strong&gt;。常用设备有：集线器、中继器、网线、双绞线、同轴电缆。&lt;/li&gt;
+&lt;li&gt;数据链路层：传输单位为&lt;strong&gt;帧&lt;/strong&gt;，用MAC地址访问媒介，有错误检测和修正&lt;/li&gt;
+&lt;li&gt;网络层：传输单位为&lt;strong&gt;包&lt;/strong&gt;。通过IP寻址来建立两个节点之间的连接，选择合适的路由和交换节点传递给目的端的运输层。&lt;/li&gt;
+&lt;li&gt;传输层：传输单位为&lt;strong&gt;段&lt;/strong&gt;。实现网络不同主机上的用户进程之间的通信，可靠传输、错误检测、流量控制、拥塞控制。
+应用层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;tcp&#34;&gt;&lt;a href=&#34;#tcp&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;TCP
+&lt;/h2&gt;&lt;h3 id=&#34;头部结构&#34;&gt;&lt;a href=&#34;#%e5%a4%b4%e9%83%a8%e7%bb%93%e6%9e%84&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;头部结构
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image-2.png&#34;
+	width=&#34;750&#34;
+	height=&#34;351&#34;
+	srcset=&#34;http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image-2_hu84d0e3c98ac87f3bfa2d3857ff6f8032_64275_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image-2_hu84d0e3c98ac87f3bfa2d3857ff6f8032_64275_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;头部结构&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;213&#34;
+		data-flex-basis=&#34;512px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;校验和&#34;&gt;&lt;a href=&#34;#%e6%a0%a1%e9%aa%8c%e5%92%8c&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;校验和
+&lt;/h3&gt;&lt;p&gt;TCP是端到端的传输，有发送方计算校验和，接收方进行验证，目的是为验证TCP首部和数据在发送过程中是否有差错。&lt;/p&gt;
+&lt;h3 id=&#34;序列号确认应答&#34;&gt;&lt;a href=&#34;#%e5%ba%8f%e5%88%97%e5%8f%b7%e7%a1%ae%e8%ae%a4%e5%ba%94%e7%ad%94&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;序列号/确认应答
+&lt;/h3&gt;&lt;p&gt;接收方接收到信息后回复确认应答号ACK，不仅会告诉接收到哪些数据，还包括下一次消息从哪里发送。发送方没有接收到ACK会重新发送数据。&lt;/p&gt;
+&lt;h3 id=&#34;超时重传&#34;&gt;&lt;a href=&#34;#%e8%b6%85%e6%97%b6%e9%87%8d%e4%bc%a0&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;超时重传
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;发送方发送时丢失，长时间没有接收到确认应答号，发送方会主动重新发送。&lt;/li&gt;
+&lt;li&gt;确认应答号ACK丢失，发送方也会重新发送，接收方通过校验和和序列号知道该数据已经接受，丢弃数据并发送ACK。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;流量控制&#34;&gt;&lt;a href=&#34;#%e6%b5%81%e9%87%8f%e6%8e%a7%e5%88%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;流量控制
+&lt;/h3&gt;&lt;p&gt;在TCP报文字段中有个16位的字段标识滑动窗口的大小，窗口大小就是剩余缓冲区大小，在回复ACK时，接收方将自己剩余缓冲区大小填入。发送方会根据ACK里滑动窗口的大小调整自己的发送速度，如果缓冲区为0停止发送，并定期发送探测报文。&lt;/p&gt;
+&lt;h3 id=&#34;拥塞控制&#34;&gt;&lt;a href=&#34;#%e6%8b%a5%e5%a1%9e%e6%8e%a7%e5%88%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;拥塞控制
+&lt;/h3&gt;&lt;p&gt;慢启动、拥塞避免、快速重传、快速回复&lt;/p&gt;
+&lt;h3 id=&#34;三次握手&#34;&gt;&lt;a href=&#34;#%e4%b8%89%e6%ac%a1%e6%8f%a1%e6%89%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;三次握手
+&lt;/h3&gt;&lt;p&gt;三次握手的目的
+&lt;img src=&#34;http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image.png&#34;
+	width=&#34;750&#34;
+	height=&#34;488&#34;
+	srcset=&#34;http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image_hua51089af2fc8abfc8b6278daf33f51a4_136517_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image_hua51089af2fc8abfc8b6278daf33f51a4_136517_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;三次握手&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;153&#34;
+		data-flex-basis=&#34;368px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第一次握手&lt;/strong&gt;
+客户端请求连接，将首部的SYN表示位置设为1，初始化序列号seq=x，发送给服务器，进入SYN_SENT状态&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第二次握手&lt;/strong&gt;
+服务器收到SYN后，将首部的SYN和ACK标识位置设为1，回复ACK的值为x+1，同时自己初始化一个序列号seq=y，发送给客户端，进入SYN_RECV状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第三次握手&lt;/strong&gt;
+客户端接收到服务器的SYN和ACK包后，向服务器发送确认包ACK值为y+1，序列号seq=x+1，客户端进入established状态，服务器接收到此分组也进入established状态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;为什么不是两次握手&#34;&gt;&lt;a href=&#34;#%e4%b8%ba%e4%bb%80%e4%b9%88%e4%b8%8d%e6%98%af%e4%b8%a4%e6%ac%a1%e6%8f%a1%e6%89%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;为什么不是两次握手
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;避免历史连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果一次客户端发送的连接请求在网络中滞留，又重新发送了连接请求然后连接成功，等关闭连接之后，滞留在网络中的连接请求到达服务端，服务端会就会发送确认认为已经建立了连接，浪费资源。如果是三次握手，则客户端收到服务器的确认不会进行下一次握手，服务器收不到第三次握手就不会开放连接。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同步双方初始序列号&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;第三次握手客户端可以确认服务端的序列起始号。（全双工）&lt;/p&gt;
+&lt;h3 id=&#34;四次挥手&#34;&gt;&lt;a href=&#34;#%e5%9b%9b%e6%ac%a1%e6%8c%a5%e6%89%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四次挥手
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image-1.png&#34;
+	width=&#34;1108&#34;
+	height=&#34;687&#34;
+	srcset=&#34;http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image-1_hu1118dfb8686ad7b9f3a9a9fcb5e87e21_280926_480x0_resize_box_3.png 480w, http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E5%85%AB%E8%82%A1/image-1_hu1118dfb8686ad7b9f3a9a9fcb5e87e21_280926_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;四次挥手&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;161&#34;
+		data-flex-basis=&#34;387px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;第一次挥手&lt;/strong&gt;
+客户端发送释放报文，并停止发送数据，将FIN置为1，序列号seq=u发送给服务器，u等于前面已经传送过来的数据的最后一个字节加1，进入FIN-WAIT-1状态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第二次挥手&lt;/strong&gt;
+服务端收到释放报文后，发送确认报文，ACK标识位置为1，ACK的值为客户端发送的序列号u+1，并带上自己的序列号v，然后服务端进入CLOSED-WAIT状态。这时服务端能继续发送数据，客户端也能继续接收数据。&lt;br&gt;
+客户端收到服务端的确认后，等待服务端发送释放报文。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第三次挥手&lt;/strong&gt;
+服务端数据处理完毕后，向客户端发送释放报文，FIN置为1，ACK的值u+1，因为可以会再发送一些数据，假设序列号为w，服务器进入LAST_ACK状态，等待客户端确认。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;第四次挥手&lt;/strong&gt;
+客户端收到释放报文后，会发送确认报文，ACK的值设为w+1，序列值seq=u+1，然后客户端进入TIME_WAIT状态，当客户端释放TCB时，才进入CLOSED状态。而服务端只要收到确认报文就会进入CLOSED状态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;msl&#34;&gt;&lt;a href=&#34;#msl&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;MSL
+&lt;/h3&gt;&lt;p&gt;MSL是任何报文在网络中被丢弃前的最长存活时间，这个时间是有限的，因为TCP是以IP数据报的形式在网络中传输，IP有限制其生存的时间TTL，&lt;strong&gt;RFC793指出MSL为2分钟，现实中常用30秒或1分钟&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;tcp和udp的区别&#34;&gt;&lt;a href=&#34;#tcp%e5%92%8cudp%e7%9a%84%e5%8c%ba%e5%88%ab&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;TCP和UDP的区别
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;TCP面向连接&lt;/strong&gt;的，需要三次握手建立连接。&lt;strong&gt;UDP不需要进行建立连接&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TCP是可靠传输服务&lt;/strong&gt;。&lt;strong&gt;UDP尽最大努力交付&lt;/strong&gt;，不保证可靠传输。&lt;/li&gt;
+&lt;li&gt;TCP是&lt;strong&gt;一对一连接&lt;/strong&gt;的。UPD支持&lt;strong&gt;一对一、一对多、多对一&lt;/strong&gt;等多种方式的通信。&lt;/li&gt;
+&lt;li&gt;TCP&lt;strong&gt;适合需要可靠连接的服务&lt;/strong&gt;，比如付费、加密数据等等方向。&lt;strong&gt;UDP传输效率高，实时性好&lt;/strong&gt;，应用于高速传输并且对实时性有要求的通信。&lt;/li&gt;
+&lt;li&gt;TCP&lt;strong&gt;首部较长&lt;/strong&gt;，且不固定长度。UDP首部&lt;strong&gt;固定长度8字节&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;TCP是流式传输，&lt;strong&gt;保证顺序和可靠&lt;/strong&gt;。UDP是一个包一个包发送的，&lt;strong&gt;可能会丢包和乱序到达&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;TCP数据太大在&lt;strong&gt;传输层&lt;/strong&gt;分片。UDP数据太大在&lt;strong&gt;IP层&lt;/strong&gt;分片。&lt;/li&gt;
+&lt;li&gt;TCP适用于&lt;strong&gt;HTTP、FTP、电子邮件（SMTP、POP3）、SSH、MYSQL连接服务器&lt;/strong&gt;。UDP适用于&lt;strong&gt;实时通信、视频流传输、在线游戏&lt;/strong&gt;等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;ip&#34;&gt;&lt;a href=&#34;#ip&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;IP
+&lt;/h2&gt;&lt;h3 id=&#34;输入url到显示屏连接的过程&#34;&gt;&lt;a href=&#34;#%e8%be%93%e5%85%a5url%e5%88%b0%e6%98%be%e7%a4%ba%e5%b1%8f%e8%bf%9e%e6%8e%a5%e7%9a%84%e8%bf%87%e7%a8%8b&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;输入URL到显示屏连接的过程
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;URL解析&lt;/li&gt;
+&lt;li&gt;TCP连接&lt;/li&gt;
+&lt;li&gt;发送HTTP请求&lt;/li&gt;
+&lt;li&gt;页面渲染&lt;/li&gt;
+&lt;li&gt;断开连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;ping命令&#34;&gt;&lt;a href=&#34;#ping%e5%91%bd%e4%bb%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;Ping命令
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;客户端向目标主机发送一个ICMP回显请求数据报，包括发送时间和一个序列号。&lt;/li&gt;
+&lt;li&gt;目标主机收到ICMP回显应答数据报，也包括发送时间和一个序列号。&lt;/li&gt;
+&lt;li&gt;客户端可以根据回显应答数据包计算往返时间。&lt;/li&gt;
+&lt;li&gt;ICMP只能检测连接，不能检测宽带。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;traceroot&#34;&gt;&lt;a href=&#34;#traceroot&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;traceroot
+&lt;/h3&gt;&lt;p&gt;traceroot是一种更高级的网络工具，用于追踪源主机到目标主机的传输路径。它通过逐步增加TLL的大小，来确定数据包经过的每一个路由器。&lt;br&gt;
+因为路由器会给源主机发送ICMP&amp;quot;超时&amp;quot;消息。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>b&#43;tree</title>
+        <link>http://localhost:1313/post/b&#43;tree/</link>
+        <pubDate>Thu, 29 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/b&#43;tree/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/351240279&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;b--tree&#34;&gt;&lt;a href=&#34;#b--tree&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B- tree
+&lt;/h1&gt;&lt;h2 id=&#34;基础概念&#34;&gt;&lt;a href=&#34;#%e5%9f%ba%e7%a1%80%e6%a6%82%e5%bf%b5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;基础概念
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;阶数：一个节点最多有多少孩子节点&lt;/li&gt;
+&lt;li&gt;关键字：节点上的数值就是关键字&lt;/li&gt;
+&lt;li&gt;度：一个节点拥有的子节点的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一个m阶的B- tree，有以下特征&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根节点至少有两个子女&lt;/li&gt;
+&lt;li&gt;每个非根节点包含的关键字个数j满足：(m-1) / 2 ≤ j ≤ m-1&lt;/li&gt;
+&lt;li&gt;有k个关键字的非叶结点恰好有k+1个孩子&lt;/li&gt;
+&lt;li&gt;所有的叶子结点都位于同一层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/b&amp;#43;tree/image.png&#34;
+	width=&#34;600&#34;
+	height=&#34;238&#34;
+	srcset=&#34;http://localhost:1313/post/b&amp;#43;tree/image_hu7be53862353c4c32de15b6c256ac3ea1_50825_480x0_resize_box_3.png 480w, http://localhost:1313/post/b&amp;#43;tree/image_hu7be53862353c4c32de15b6c256ac3ea1_50825_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个简单的b-tree&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;252&#34;
+		data-flex-basis=&#34;605px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;b-tree&#34;&gt;&lt;a href=&#34;#b-tree&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+ tree
+&lt;/h1&gt;&lt;p&gt;一个m阶的B- tree，有以下特征&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个节点至多有m个子女&lt;/li&gt;
+&lt;li&gt;每个非根节点包含的关键字个数j满足：(m-1) / 2 ≤ j ≤ m-1&lt;/li&gt;
+&lt;li&gt;相邻叶子节点通过指针连起来，并且通关关键字大小排序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/b&amp;#43;tree/image-1.png&#34;
+	width=&#34;600&#34;
+	height=&#34;216&#34;
+	srcset=&#34;http://localhost:1313/post/b&amp;#43;tree/image-1_hu4d66c09613f021ec92452a5c7dd501b0_66501_480x0_resize_box_3.png 480w, http://localhost:1313/post/b&amp;#43;tree/image-1_hu4d66c09613f021ec92452a5c7dd501b0_66501_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个3阶的B&amp;#43; tree&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;277&#34;
+		data-flex-basis=&#34;666px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;b--tree和b-tree的主要区别&#34;&gt;&lt;a href=&#34;#b--tree%e5%92%8cb-tree%e7%9a%84%e4%b8%bb%e8%a6%81%e5%8c%ba%e5%88%ab&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B- tree和B+ tree的主要区别
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;B-树内部节点保存数据，但B+树内部节点是不保存数据的，只作索引作用。&lt;/li&gt;
+&lt;li&gt;B+树的叶子结点通过链表指针连起来，而B-树不是。&lt;/li&gt;
+&lt;li&gt;查找时，B-树找到目的值就结束，而B+树要通过索引找到叶子结点才结束&lt;/li&gt;
+&lt;li&gt;B-树任何一个关键字出现且只出现在一个结点中，而B+树可以出现多次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;b树的插入&#34;&gt;&lt;a href=&#34;#b%e6%a0%91%e7%9a%84%e6%8f%92%e5%85%a5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+树的插入
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;先找到要插入的叶子结点&lt;/li&gt;
+&lt;li&gt;如果被插入关键字的叶子节点当前含有的关键字数量小于阶数m，则直接插入。&lt;/li&gt;
+&lt;li&gt;插入之后的关键字的数量如果等于m，则该节点分裂成两个新的节点，各包含一半的关键字。&lt;/li&gt;
+&lt;li&gt;分裂后，将右边的关键字插入到父节点中，回到3&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;b树的查找&#34;&gt;&lt;a href=&#34;#b%e6%a0%91%e7%9a%84%e6%9f%a5%e6%89%be&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+树的查找
+&lt;/h2&gt;&lt;h3 id=&#34;单值查找&#34;&gt;&lt;a href=&#34;#%e5%8d%95%e5%80%bc%e6%9f%a5%e6%89%be&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;单值查找
+&lt;/h3&gt;&lt;p&gt;在B+树中查找x&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在节点中找到第一个大于等于x的关键字，继续向下查找孩子节点&lt;/li&gt;
+&lt;li&gt;直到在叶子节点中找到x&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;范围查找&#34;&gt;&lt;a href=&#34;#%e8%8c%83%e5%9b%b4%e6%9f%a5%e6%89%be&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;范围查找
+&lt;/h3&gt;&lt;p&gt;在B+树中查找满足[l,r]的区间&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;按单值查找找到l&lt;/li&gt;
+&lt;li&gt;然后遍历链表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;b树的删除&#34;&gt;&lt;a href=&#34;#b%e6%a0%91%e7%9a%84%e5%88%a0%e9%99%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+树的删除
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;找到包含关键值的节点，如果关键字个数大于(m-1)/2直接删除，如果删除的是父节点的关键字，则要更新父节点的值&lt;/li&gt;
+&lt;li&gt;如果删除之后关键字个数小于(m-1)/2，则可以向兄弟结点借用关键字&lt;/li&gt;
+&lt;li&gt;如果兄弟结点也不够，则要和兄弟结点合并，并且在父节点中删除右边孩子节点的关键字&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>一些数据库的八股</title>
         <link>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%85%AB%E8%82%A1/</link>
         <pubDate>Wed, 28 Aug 2024 00:00:00 +0000</pubDate>
@@ -16,7 +346,7 @@
 &lt;/h1&gt;&lt;h2 id=&#34;关系型数据库和非关系型数据库&#34;&gt;&lt;a href=&#34;#%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93%e5%92%8c%e9%9d%9e%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;关系型数据库和非关系型数据库
 &lt;/h2&gt;&lt;h3 id=&#34;关系型数据库&#34;&gt;&lt;a href=&#34;#%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;关系型数据库
 &lt;/h3&gt;&lt;p&gt;关系型数据库最典型的数据结构是表，由二维表和其之间的联系组成的数据组织&lt;br&gt;
-常见的关系型数据库有SQLServer、Mysql等
+常见的关系型数据库有SQLServer、Mysql等&lt;br&gt;
 优点&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;易于维护&lt;/strong&gt;&lt;/li&gt;
@@ -31,7 +361,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&#34;非关系型数据库&#34;&gt;&lt;a href=&#34;#%e9%9d%9e%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;非关系型数据库
 &lt;/h3&gt;&lt;p&gt;非关系型数据库严格上不是一种数据库，应该是一种数据结构化存储方法的集合，可以是文档或key-value等&lt;br&gt;
-常见的非关系型数据库有redis等
+常见的非关系型数据库有redis等&lt;br&gt;
 优点&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;格式灵活&lt;/strong&gt;，存储类型可以是key-value、文档、图片等&lt;/li&gt;
@@ -55,6 +385,27 @@
 &lt;/h3&gt;&lt;p&gt;在第三范式的基础上，消除多值依赖。即如果一个表中的某些列可以取多个值（多个电话号码），那么这些多值依赖的列应该剥离出来，创建新的表处理。&lt;/p&gt;
 &lt;h3 id=&#34;第五范式&#34;&gt;&lt;a href=&#34;#%e7%ac%ac%e4%ba%94%e8%8c%83%e5%bc%8f&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;第五范式
 &lt;/h3&gt;&lt;p&gt;在第四范式的基础上，消除奇异化（超规范化）。奇异化是指在消除多值依赖时剥离出来的列存在相互关系，则需要再次拆分为独立的表进行处理。&lt;/p&gt;
+&lt;h1 id=&#34;事务&#34;&gt;&lt;a href=&#34;#%e4%ba%8b%e5%8a%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;事务
+&lt;/h1&gt;&lt;p&gt;事务是数据库执行的逻辑单位，包含一系列读写操作，整个单元不可分割，是原子性的。&lt;/p&gt;
+&lt;h2 id=&#34;四大特性&#34;&gt;&lt;a href=&#34;#%e5%9b%9b%e5%a4%a7%e7%89%b9%e6%80%a7&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;四大特性
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;隔离性&lt;/strong&gt;，一个事务在其最终提交之前，对其他事务不可见&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;原子性&lt;/strong&gt;，整个事务的操作要么全部执行，要么全部不执行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;持久性&lt;/strong&gt;，一旦事务结束，则其对数据库的修改就会永久保存在数据库中&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;一致性&lt;/strong&gt;，数据库总是从一个一致性转态转换到另一个一致性状态。也就是满足如约束、触发器等一致性规则&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于单条 SQL 语句，数据库系统自动将其作为一个事务执行，这种事务被称为隐式事务。&lt;/p&gt;
+&lt;h2 id=&#34;并发事务会出现的问题&#34;&gt;&lt;a href=&#34;#%e5%b9%b6%e5%8f%91%e4%ba%8b%e5%8a%a1%e4%bc%9a%e5%87%ba%e7%8e%b0%e7%9a%84%e9%97%ae%e9%a2%98&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;并发事务会出现的问题
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;脏读&lt;/strong&gt;，读到了不存在的数据，这些数据被之前的事务删除了&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不可重复读&lt;/strong&gt;，同一事务在不同时刻读同一批的数据可能不同&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;幻读&lt;/strong&gt;，针对插入操作，有一行的数据被修改，另一个事务插入了这一行更改前的记录行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可重复读&lt;/strong&gt;，在一个事务内，任一时刻读到的数据一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;mysql默认事务隔离级别是可重复读。&lt;br&gt;
+另外数据可还可使用MVCC多版本并发控制，通过对数据行的多个办公控制来实现数据库的并发控制。或使用串行化的读写锁进行并发控制。&lt;/p&gt;
+&lt;h1 id=&#34;索引&#34;&gt;&lt;a href=&#34;#%e7%b4%a2%e5%bc%95&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;索引
+&lt;/h1&gt;&lt;p&gt;见b+树&lt;/p&gt;
 </description>
         </item>
         <item>
@@ -168,7 +519,15 @@ a+3c &amp;amp; b+3d
 </description>
         </item>
         <item>
-        <title></title>
+        <title>Synchronization Tools, Examples and Deadlocks</title>
+        <link>http://localhost:1313/post/behind-6.s081-chapter6/</link>
+        <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/behind-6.s081-chapter6/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>报名预推免</title>
         <link>http://localhost:1313/post/%E6%8A%A5%E5%90%8D%E9%A2%84%E6%8E%A8%E5%85%8D/</link>
         <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
         
@@ -195,16 +554,15 @@ a+3c &amp;amp; b+3d
     &gt;哈尔滨工业大学威海&lt;/a&gt;
 &lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://cst.hitwh.edu.cn/2024/0808/c371a186070/page.htm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;工作细则 9.1审核，看看还能不能上传材料&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;heading&#34;&gt;&lt;a href=&#34;#heading&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;
-&lt;/h2&gt;</description>
-        </item>
-        <item>
-        <title>Synchronization Tools, Examples and Deadlocks</title>
-        <link>http://localhost:1313/post/behind-6.s081-chapter6/</link>
-        <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/post/behind-6.s081-chapter6/</guid>
-        <description></description>
+&lt;h2 id=&#34;天津大学http202113892gstmsexamineeindexaction&#34;&gt;&lt;a href=&#34;#%e5%a4%a9%e6%b4%a5%e5%a4%a7%e5%ad%a6http202113892gstmsexamineeindexaction&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;http://202.113.8.92/gstms/examineeIndex.action&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;天津大学&lt;/a&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://yzb.tju.edu.cn/xwzx/zxxx/202407/t20240706_323840.htm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;推免系统开放9.17预推免&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;山东大学httpssduyjssdueducnyjszspluginszszsxsdentrancetmfwksdexemption&#34;&gt;&lt;a href=&#34;#%e5%b1%b1%e4%b8%9c%e5%a4%a7%e5%ad%a6httpssduyjssdueducnyjszspluginszszsxsdentrancetmfwksdexemption&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;&lt;a class=&#34;link&#34; href=&#34;https://sduyjs.sdu.edu.cn/yjszs/plugins/zs/zsxsd/entrance#/tmfwksdExemption&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;山东大学&lt;/a&gt;
+&lt;/h2&gt;&lt;p&gt;计算机-9.18
+软件-9.18&lt;/p&gt;
+</description>
         </item>
         <item>
         <title>xv6-book Chapter 6:Locking</title>
@@ -218,7 +576,7 @@ a+3c &amp;amp; b+3d
 &lt;/h4&gt;&lt;p&gt;常用的同步工具有：锁Lock，条件变量Conditional Variable，信号量Semaphore等。&lt;/p&gt;
 &lt;h4 id=&#34;临界区和竞争条件&#34;&gt;&lt;a href=&#34;#%e4%b8%b4%e7%95%8c%e5%8c%ba%e5%92%8c%e7%ab%9e%e4%ba%89%e6%9d%a1%e4%bb%b6&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;临界区和竞争条件
 &lt;/h4&gt;&lt;p&gt;访问共享资源的代码段，我们称之为&lt;strong&gt;临界区Critical Section&lt;/strong&gt;，而多个执行线程同时进入临界区并尝试更新共享数据结构的情况，我们称之为&lt;strong&gt;竞争条件Race Condition&lt;/strong&gt;。&lt;/p&gt;
-&lt;p&gt;下面是一个生产者消费者的模型&lt;/p&gt;
+&lt;p&gt;下面是一个生产者-消费者的模型&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// Producer
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; (true) {
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;/* produce an item in next produced */&lt;/span&gt;
@@ -689,23 +1047,6 @@ xv6里面有很多这种上锁顺序的实例，尤其是同时持有两个锁�
 </description>
         </item>
         <item>
-        <title></title>
-        <link>http://localhost:1313/post/%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%AF%AD/</link>
-        <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/post/%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%AF%AD/</guid>
-        <description>&lt;h2 id=&#34;1介绍一下自己&#34;&gt;&lt;a href=&#34;#1%e4%bb%8b%e7%bb%8d%e4%b8%80%e4%b8%8b%e8%87%aa%e5%b7%b1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1.介绍一下自己
-&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;Dear Professors,
-Good morning/afternoon/evening. My name is Meng Tian, and I am from Heze, Shandong. I am currently studying at Changchun University of Science and Technology. It is a great honor to participate in this interview, and I would like to take this opportunity to briefly introduce myself.
-My undergraduate major is Software Engineering, where I have studied courses such as Operating Systems, Data Structures, Computer Networks, C++ Programming, and Java Programming. Due to my deep interest in computer science, I have consistently advanced my studies beyond the standard curriculum and achieved excellent results, ranking sixth in my major. As a side note, I chose 96 computer-related options when applying for universities after the college entrance exam.
-Additionally, I dedicated a significant portion of my time during university to preparing for competitions. Our training was rigorous, and last summer, I stayed at school, maintaining a daily training schedule of ten hours. This hard work paid off, as I won eight national awards, including a gold medal at the China Collegiate Programming Contest National Invitational (Changchun), as well as several provincial awards. These achievements also secured my first-place ranking in the postgraduate recommendation list within my major. Through these competitions, I developed strong self-learning skills, a solid foundation in programming, and the ability to perform well under pressure. Moreover, I have consistently practiced reading problem statements in English, which has given me a good command of English reading comprehension.
-Looking ahead, I aspire to work in the fields of operating systems or big data. If, during my graduate studies, my research abilities are recognized by my advisor, and my passion for the subject continues to grow, I would consider pursuing a Ph.D. My ultimate goal is to become a researcher, working in a university or research institute, where I can contribute to the field I love.
-Thank you very much for your time and consideration!&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        </item>
-        <item>
         <title>一些板子</title>
         <link>http://localhost:1313/post/%E4%B8%80%E4%BA%9B%E6%9D%BF%E5%AD%90/</link>
         <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
@@ -950,6 +1291,27 @@ Thank you very much for your time and consideration!&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;//保留小数
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;cout&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt;fixed&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt;setprecision(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&amp;lt;&lt;/span&gt;a;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+        </item>
+        <item>
+        <title>面试口语</title>
+        <link>http://localhost:1313/post/%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%AF%AD/</link>
+        <pubDate>Sun, 18 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/%E9%9D%A2%E8%AF%95%E5%8F%A3%E8%AF%AD/</guid>
+        <description>&lt;h2 id=&#34;1介绍一下自己&#34;&gt;&lt;a href=&#34;#1%e4%bb%8b%e7%bb%8d%e4%b8%80%e4%b8%8b%e8%87%aa%e5%b7%b1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;1.介绍一下自己
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;Good morning/afternoon/evening,Professors. I’m [Your Name] from [Your Hometown], currently studying Software Engineering at Changchun University of Science and Technology. It’s great to be here today.
+During my undergrad, I’ve done really well in courses like Operating Systems, Data Structures, and Programming. I’m ranked sixth in my major, which reflects my strong interest in computer science. Just to share, I chose 96 computer-related options when applying for universities after the college entrance exam. I’ve also spent a lot of time on competitive programming, winning eight national awards, including a gold medal at the China Collegiate Programming Contest National Invitational in Changchun. These experiences have really boosted my programming skills, my ability to learn independently, and my resilience under pressure.
+Looking ahead, I’m excited about diving into research in operating systems or big data. If my research goes well during grad school, I might pursue a Ph.D. with the goal of becoming a researcher at a university or institute.
+Thanks so much for your time and consideration!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;2为什么选择我们学校&#34;&gt;&lt;a href=&#34;#2%e4%b8%ba%e4%bb%80%e4%b9%88%e9%80%89%e6%8b%a9%e6%88%91%e4%bb%ac%e5%ad%a6%e6%a0%a1&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;2.为什么选择我们学校
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;I decided to choose Changchun University of Science and Technology for a few key reasons. First, the university is really strong in computer science with great research and teaching resources. Second, Changchun has a great location and looks like it has a bright future ahead. Lastly, I’ve heard from upperclassmen that the campus is beautiful and really focuses on taking care of students, which is a big plus for me.
+There’s actually one more reason that’s a bit personal—my dad lives in the Hexi District, which is quite close. However, I really don’t want this to affect my judgment about my future and the university.
+I think that’s about it.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
         </item>
         <item>
         <title>2024-08-13</title>

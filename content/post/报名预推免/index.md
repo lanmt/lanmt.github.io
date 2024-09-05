@@ -19,3 +19,8 @@ categories:
 [工作细则 9.1审核，看看还能不能上传材料](https://cst.hitwh.edu.cn/2024/0808/c371a186070/page.htm)
 ## [天津大学](http://202.113.8.92/gstms/examineeIndex.action)
 [推免系统开放9.17预推免](https://yzb.tju.edu.cn/xwzx/zxxx/202407/t20240706_323840.htm)
+## [山东大学](https://sduyjs.sdu.edu.cn/yjszs/plugins/zs/zsxsd/entrance#/tmfwksdExemption)
+计算机-9.18
+软件-9.18
+## [同济大学](https://yzbm.tongji.edu.cn/logon)
+[预推免通知-9.26？每个学院不一样忘记带手机了](https://yz.tongji.edu.cn/info/1010/3638.htm)

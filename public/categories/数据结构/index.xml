@@ -5,6 +5,99 @@
         <link>http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link>
         <description>Recent content in 数据结构 on Lanmt O.o</description>
         <generator>Hugo -- gohugo.io</generator>
-        <language>en-us</language><atom:link href="http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+        <language>en-us</language>
+        <lastBuildDate>Thu, 29 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>b&#43;tree</title>
+        <link>http://localhost:1313/post/b&#43;tree/</link>
+        <pubDate>Thu, 29 Aug 2024 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/post/b&#43;tree/</guid>
+        <description>&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/351240279&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;b--tree&#34;&gt;&lt;a href=&#34;#b--tree&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B- tree
+&lt;/h1&gt;&lt;h2 id=&#34;基础概念&#34;&gt;&lt;a href=&#34;#%e5%9f%ba%e7%a1%80%e6%a6%82%e5%bf%b5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;基础概念
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;阶数：一个节点最多有多少孩子节点&lt;/li&gt;
+&lt;li&gt;关键字：节点上的数值就是关键字&lt;/li&gt;
+&lt;li&gt;度：一个节点拥有的子节点的数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一个m阶的B- tree，有以下特征&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;根节点至少有两个子女&lt;/li&gt;
+&lt;li&gt;每个非根节点包含的关键字个数j满足：(m-1) / 2 ≤ j ≤ m-1&lt;/li&gt;
+&lt;li&gt;有k个关键字的非叶结点恰好有k+1个孩子&lt;/li&gt;
+&lt;li&gt;所有的叶子结点都位于同一层&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/b&amp;#43;tree/image.png&#34;
+	width=&#34;600&#34;
+	height=&#34;238&#34;
+	srcset=&#34;http://localhost:1313/post/b&amp;#43;tree/image_hu7be53862353c4c32de15b6c256ac3ea1_50825_480x0_resize_box_3.png 480w, http://localhost:1313/post/b&amp;#43;tree/image_hu7be53862353c4c32de15b6c256ac3ea1_50825_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个简单的b-tree&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;252&#34;
+		data-flex-basis=&#34;605px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;b-tree&#34;&gt;&lt;a href=&#34;#b-tree&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+ tree
+&lt;/h1&gt;&lt;p&gt;一个m阶的B- tree，有以下特征&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每个节点至多有m个子女&lt;/li&gt;
+&lt;li&gt;每个非根节点包含的关键字个数j满足：(m-1) / 2 ≤ j ≤ m-1&lt;/li&gt;
+&lt;li&gt;相邻叶子节点通过指针连起来，并且通关关键字大小排序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://localhost:1313/post/b&amp;#43;tree/image-1.png&#34;
+	width=&#34;600&#34;
+	height=&#34;216&#34;
+	srcset=&#34;http://localhost:1313/post/b&amp;#43;tree/image-1_hu4d66c09613f021ec92452a5c7dd501b0_66501_480x0_resize_box_3.png 480w, http://localhost:1313/post/b&amp;#43;tree/image-1_hu4d66c09613f021ec92452a5c7dd501b0_66501_1024x0_resize_box_3.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;一个3阶的B&amp;#43; tree&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;277&#34;
+		data-flex-basis=&#34;666px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;b--tree和b-tree的主要区别&#34;&gt;&lt;a href=&#34;#b--tree%e5%92%8cb-tree%e7%9a%84%e4%b8%bb%e8%a6%81%e5%8c%ba%e5%88%ab&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B- tree和B+ tree的主要区别
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;B-树内部节点保存数据，但B+树内部节点是不保存数据的，只作索引作用。&lt;/li&gt;
+&lt;li&gt;B+树的叶子结点通过链表指针连起来，而B-树不是。&lt;/li&gt;
+&lt;li&gt;查找时，B-树找到目的值就结束，而B+树要通过索引找到叶子结点才结束&lt;/li&gt;
+&lt;li&gt;B-树任何一个关键字出现且只出现在一个结点中，而B+树可以出现多次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;b树的插入&#34;&gt;&lt;a href=&#34;#b%e6%a0%91%e7%9a%84%e6%8f%92%e5%85%a5&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+树的插入
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;先找到要插入的叶子结点&lt;/li&gt;
+&lt;li&gt;如果被插入关键字的叶子节点当前含有的关键字数量小于阶数m，则直接插入。&lt;/li&gt;
+&lt;li&gt;插入之后的关键字的数量如果等于m，则该节点分裂成两个新的节点，各包含一半的关键字。&lt;/li&gt;
+&lt;li&gt;分裂后，将右边的关键字插入到父节点中，回到3&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;b树的查找&#34;&gt;&lt;a href=&#34;#b%e6%a0%91%e7%9a%84%e6%9f%a5%e6%89%be&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+树的查找
+&lt;/h2&gt;&lt;h3 id=&#34;单值查找&#34;&gt;&lt;a href=&#34;#%e5%8d%95%e5%80%bc%e6%9f%a5%e6%89%be&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;单值查找
+&lt;/h3&gt;&lt;p&gt;在B+树中查找x&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在节点中找到第一个大于等于x的关键字，继续向下查找孩子节点&lt;/li&gt;
+&lt;li&gt;直到在叶子节点中找到x&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;范围查找&#34;&gt;&lt;a href=&#34;#%e8%8c%83%e5%9b%b4%e6%9f%a5%e6%89%be&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;范围查找
+&lt;/h3&gt;&lt;p&gt;在B+树中查找满足[l,r]的区间&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;按单值查找找到l&lt;/li&gt;
+&lt;li&gt;然后遍历链表&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;b树的删除&#34;&gt;&lt;a href=&#34;#b%e6%a0%91%e7%9a%84%e5%88%a0%e9%99%a4&#34; class=&#34;header-anchor&#34;&gt;&lt;/a&gt;B+树的删除
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;找到包含关键值的节点，如果关键字个数大于(m-1)/2直接删除，如果删除的是父节点的关键字，则要更新父节点的值&lt;/li&gt;
+&lt;li&gt;如果删除之后关键字个数小于(m-1)/2，则可以向兄弟结点借用关键字&lt;/li&gt;
+&lt;li&gt;如果兄弟结点也不够，则要和兄弟结点合并，并且在父节点中删除右边孩子节点的关键字&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        
     </channel>
 </rss>
