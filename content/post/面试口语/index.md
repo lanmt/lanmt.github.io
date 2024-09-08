@@ -19,5 +19,8 @@ I think that’s about it.
 ## 3.介绍最喜欢的课程
 >My favorite course is CMU's 15213, an introductory course for computer science students. It gave me a comprehensive understanding of how computers work.This course covers C programs, linking,traps, virtual memory,system level IO and so on. Since I started learning about computers at an early age, I found it exciting to finally understand how they operate on a deeper level.
 ## 4.优点和缺点
+>I think my main flaw is having overly high expectations of others and situations. The disappointment that follows can affect my decisions and efficiency. On the bright side, I have a positive mindset. I try to minimize my sadness as much as possible because I truly believe this world is a beautiful place.
 ## 5.研究生生活和计划
+>In my future graduate studies, I will strictly follow my advisor's guidance. I plan to be proactive in learning from my predecessors, building up my knowledge, and then fully immersing myself in research.
 ## 6.介绍一下家乡
+>I’m from Heze, Shandong, which is known as the Peony Capital of China. Heze is a beautiful city with a rich history, and welcome everyone to visit. Maybe we are more familiar with our first lady PLY, who is from 山东郓城.
