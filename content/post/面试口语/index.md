@@ -24,3 +24,4 @@ I think that’s about it.
 >In my future graduate studies, I will strictly follow my advisor's guidance. I plan to be proactive in learning from my predecessors, building up my knowledge, and then fully immersing myself in research.
 ## 6.介绍一下家乡
 >I’m from Heze, Shandong, which is known as the Peony Capital of China. Heze is a beautiful city with a rich history, and welcome everyone to visit. Maybe we are more familiar with our first lady PLY, who is from 山东郓城.
+## 7.
