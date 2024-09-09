@@ -4,13 +4,14 @@ date: 2024-08-23
 description: 让我有个学上吧，求求了
 categories:
     - 保研
+draft: true
 ---
 
 ##  [浙江大学报名系统](https://yjsy.zju.edu.cn/zs/user/login)
-[工程师学院 -9.10 明天盖章换个材料交一下](https://pi.zju.edu.cn/2024/0808/c67026a2952040/page.htm)
+[工程师学院 -9.10 OK了](https://pi.zju.edu.cn/2024/0808/c67026a2952040/page.htm)
 [软件学院 -9.10](http://www.cst.zju.edu.cn/2024/0811/c36206a2952716/page.htm)
 ## [国防科技大学报名系统](http://yjszs.nudt.edu.cn/system/login/mlogin.jsp?intype=1)
-[工作方案 报名预计9.7-9.22已报名填错了研究一下](http://yjszs.nudt.edu.cn/pubweb/homePageList/detailed.view?keyId=13804)
+[工作方案 报名预计9.7-9.22已报名 信息填错了研究一下](http://yjszs.nudt.edu.cn/pubweb/homePageList/detailed.view?keyId=13804)
 ## [东北大学报名系统](http://gsas.neu.edu.cn/logon)
 [工作方法 可以填系统了](http://yz.neu.edu.cn/2024/0729/c5932a266900/page.htm)
 ## [大连理工大学报名系统](https://yjszs.dlut.edu.cn/zsbm/sstm/index#)
@@ -24,3 +25,4 @@ categories:
 软件-9.18
 ## [同济大学](https://yzbm.tongji.edu.cn/logon)
 [预推免通知-9.14](https://yz.tongji.edu.cn/info/1010/3638.htm)
+[计算机学院 已报名](https://sse.tongji.edu.cn/info/1132/5276.htm)
