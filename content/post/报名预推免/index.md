@@ -4,7 +4,7 @@ date: 2024-08-23
 description: 让我有个学上吧，求求了
 categories:
     - 保研
-draft: true
+draft: 
 ---
 
 ##  [浙江大学报名系统。。√](https://yjsy.zju.edu.cn/zs/user/login)
@@ -27,4 +27,6 @@ draft: true
 [预推免通知-9.14](https://yz.tongji.edu.cn/info/1010/3638.htm)
 [计算机学院 已报名](https://sse.tongji.edu.cn/info/1132/5276.htm)
 ## [复旦大学。。√](https://gsas.fudan.edu.cn/tm/index)
-[已报名](https://gsao.fudan.edu.cn/8a/a3/c15014a690851/page.htm)
+[已报名-9.13](https://gsao.fudan.edu.cn/8a/a3/c15014a690851/page.htm)
+## [二战华东师范大学。。√](https://yjszs-ks.ecnu.edu.cn/ssxly/xly/index)
+[已报名-9.18]
