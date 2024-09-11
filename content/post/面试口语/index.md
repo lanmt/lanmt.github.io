@@ -7,7 +7,8 @@ categories:
 draft: 
 ---
 ## 1.介绍一下自己
->垃圾
+>我叫孟天，来自山东菏泽，现在就读于长春理工大学软件工程专业。
+我主修的专业课程有操作系统、数据结构与算法、面向对象程序设计、数据库等。我的专业总人数为139，我的专业排名是第1名，目前已经获得保研名额。在保持专业课学习的同时，我在学科竞赛中花费了很多时间，主要参加acmicpc一类的程序设计竞赛。这类比赛要求选手在五个小时之内解决十几道实际问题，选手需要在短时间内快速分析问题，设计并实现算法，考验逻辑思维和抽象思维。在我三年的训练中，我经常留宿机房，在大二暑假留校并保持每天十二个小时的训练。通过这个比赛，我养成了良好的自学习惯，写过上万行的代码极大的提高了我的编程水平和算法能力，在程序设计比赛中我共计获得了11项国家级奖项和若干省级奖项。未来我希望可以从事人工智能或大数据方向的研究，如果研究生生涯顺利的话，我非常希望能继续读博深造。
 >Good morning/afternoon/evening,Professors. I’m [Your Name] from [Your Hometown], currently studying Software Engineering at Changchun University of Science and Technology. It’s great to be here today.\
 During my undergrad, I’ve done really well in courses like Operating Systems, Data Structures, and Programming. I’m ranked sixth in my major, which reflects my strong interest in computer science. Just to share, I chose 96 computer-related options when applying for universities after the college entrance exam. I’ve also spent a lot of time on competitive programming, winning eleven national awards, including a gold medal at the China Collegiate Programming Contest National Invitational in Changchun. These experiences have really boosted my programming skills, my ability to learn independently, and my resilience under pressure.\
 Looking ahead, I’m excited about diving into research in operating systems or big data. If my research goes well during grad school, I would like to pursue a Ph.D. with the goal of becoming a researcher at a university or research institute.
@@ -51,3 +52,4 @@ In the third year, I’ll focus on completing a high-quality thesis and securing
 >The main reason for my low score was that I didn’t prepare adequately at the time, and there were some conflicts with my school exams. I’ve since realized how crucial English proficiency is, especially for understanding academic papers and technical documents. I’m now taking more steps to improve my skills, focusing more on speaking and listening. I’ve also promised my advisor that I will score at least 500 on the next CET-6.
 ## 10.优势？为什么胜任？
 我的求学热情
+## 11.你担任的角色
