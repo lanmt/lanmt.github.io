@@ -19,7 +19,7 @@ draft:
 ## [哈尔滨工业大学威海。。√](https://yzb.hit.edu.cn/)
 [工作细则 直接g](https://cst.hitwh.edu.cn/2024/0808/c371a186070/page.htm)
 ## [天津大学。。√](http://202.113.8.92/gstms/examineeIndex.action)
-[推免系统开放-9.13](https://yzb.tju.edu.cn/xwzx/zxxx/202407/t20240706_323840.htm)
+[智能计算学部-9.13   未来技术学院-9.15](https://yzb.tju.edu.cn/xwzx/zxxx/202407/t20240706_323840.htm)
 ## [山东大学。。√](https://sduyjs.sdu.edu.cn/yjszs/plugins/zs/zsxsd/entrance#/tmfwksdExemption)
 计算机-9.18 已报名
 软件-9.18
@@ -30,5 +30,9 @@ draft:
 [已报名-9.13](https://gsao.fudan.edu.cn/8a/a3/c15014a690851/page.htm)
 ## [二战华东师范大学。。√](https://yjszs-ks.ecnu.edu.cn/ssxly/xly/index)
 [已报名-9.18]
+## [华南理工大学](https://yanzhao.scut.edu.cn/MasterTm/Apply.aspx)
+[报名通知9月中旬审核](https://yz.chsi.com.cn/kyzx/yxzc/202308/20230825/2293111626.html)
 ## [南开大学](https://yzxt.nankai.edu.cn/intern/frontend/web/user-action/login)
 [最新消息](https://yzxt.nankai.edu.cn/intern/frontend/web/pg-net-sign-up/index)
+## [中科大科学岛](https://gs.hfcas.ac.cn/home)
+[通知-9.25](https://www.hf.cas.cn/sbpy/yjsc/zs/sszs/202409/t20240910_7342840.html)
