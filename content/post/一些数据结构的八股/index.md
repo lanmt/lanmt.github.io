@@ -5,6 +5,7 @@ description:
 categories:
     - 数据结构
 ---
+
 ## 红黑树
 ### 特性
 - 每个节点为红色或黑色。

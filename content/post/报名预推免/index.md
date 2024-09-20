@@ -36,3 +36,5 @@ draft:
 [最新消息](https://yzxt.nankai.edu.cn/intern/frontend/web/pg-net-sign-up/index)
 ## [中科大科学岛？？](https://gs.hfcas.ac.cn/home)
 [通知-9.25](https://www.hf.cas.cn/sbpy/yjsc/zs/sszs/202409/t20240910_7342840.html)
+## [中南大学]发邮件
+[工作安排](https://ei.csu.edu.cn/info/1085/1633.htm)
