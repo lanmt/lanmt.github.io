@@ -22,6 +22,7 @@ draft:
 [智能计算学部-9.13   未来技术学院-9.15](https://yzb.tju.edu.cn/xwzx/zxxx/202407/t20240706_323840.htm)
 ## [山东大学。。√](https://sduyjs.sdu.edu.cn/yjszs/plugins/zs/zsxsd/entrance#/tmfwksdExemption)
 计算机-9.18 已报名
+未来技术学院 已报名
 软件-9.18
 ## [同济大学。。√](https://yzbm.tongji.edu.cn/logon)
 [预推免通知-9.14](https://yz.tongji.edu.cn/info/1010/3638.htm)
@@ -34,7 +35,9 @@ draft:
 [报名通知9月中旬审核 已报名](https://yz.chsi.com.cn/kyzx/yxzc/202308/20230825/2293111626.html)
 ## [南开大学](https://yzxt.nankai.edu.cn/intern/frontend/web/user-action/login)
 [最新消息](https://yzxt.nankai.edu.cn/intern/frontend/web/pg-net-sign-up/index)
-## [中科大科学岛？？](https://gs.hfcas.ac.cn/home)
+## [中科大科学岛。。√](https://gs.hfcas.ac.cn/home)
 [通知-9.25](https://www.hf.cas.cn/sbpy/yjsc/zs/sszs/202409/t20240910_7342840.html)
-## [中南大学]发邮件
+## [中南大学。。√]发邮件
 [工作安排](https://ei.csu.edu.cn/info/1085/1633.htm)
+## [吉林大学。。√](https://yzb.jlu.edu.cn/tmsbm/)
+[通知](https://ccst.jlu.edu.cn/info/1229/19813.htm)

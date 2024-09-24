@@ -243,6 +243,48 @@ ty = y0 * c / gcd;
 //x = tx + dx * k
 //y = ty - dy * k
 ```
+## 链式前向星
+```cpp
+#include<stdio.h>
+#include<stdlib.h>
+const int maxn = 1005;
+int n, m, cnt;
+struct Edge
+{
+    int to, w, next;
+}edge[maxn];//双向边记得开二倍 
+int head[maxn];
+void init()//初始化
+{
+    for (int i = 0; i <= n; i++) head[i] = -1;
+    cnt = 0;
+}
+void add_edge(int u, int v, int w)
+{
+    edge[cnt].to = v; 
+    edge[cnt].w = w; 
+    edge[cnt].next = head[u];
+    head[u] = cnt++;
+}
+int main()
+{
+    cin >> n >> m;
+    int u, v, w;
+    init();
+    for (int i = 1; i <= m; i++)
+    {
+        cin >> u >> v >> w;
+        add_edge(u, v, w);
+    }
+    
+    for (int j = head[i]; j != -1; j = edge[j].next)//遍历以i为起点的边
+    {
+        cout << i << " " << edge[j].to << " " << edge[j].w << endl;
+    }
+    
+    return 0;
+}
+```
 ## 并查集
 ```cpp
 #define maxm 100010
@@ -253,6 +295,21 @@ int find(int i) {
 		fa[i] = find(fa[i]);
 		return fa[i];
 	}
+}
+```
+## 随机数
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+int main() {
+    int a;
+    // 初始化随机数种子
+    srand((unsigned)time(NULL));
+    //fisher_yates_shuffle(arr, n);数组随机排序
+    a = rand();
+    printf("%d\n", a);
+    return 0;
 }
 ```
 ## 其他
@@ -267,4 +324,35 @@ do {
 
 //保留小数
 cout<<fixed<<setprecision(10)<<a;
+
+//字符串
+# include <stdio.h>
+int main(void)
+{
+	int i=0;
+	int j;
+	char ch;
+	char a[256] = {0};
+	while((ch=getchar())!='\n')//一直接收缓冲区的字符。直至收到回车
+	{
+	   	a[i]=ch;
+	   	i++;
+	}
+	a[i]='\0';    //加上串尾符
+	for(j=0;j<i;j++)
+	{
+		printf("%c",a[j]);
+	}
+    return 0;
+}
+
+# include <stdio.h>
+int main(void)
+{
+	char a[256];
+	scanf("%s",&a);
+	printf("%s",a);
+    return 0;
+}
+
 ```
